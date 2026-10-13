@@ -1,23 +1,49 @@
 // ============================================================================
-// MAIN APPLICATION BOOTSTRAPPER & HUD CONTROLLER
-// Handles dynamic rendering, tab switching, Command Palette, and event bindings
+// MAIN APPLICATION BOOTSTRAPPER & HUD CONTROLLER [v3.0.0]
+// Advanced Theme Manager, Audio Visualizer, Cyber Terminal, and 3D Spotlight
 // ============================================================================
+
+// Theme Manager
+class ThemeManager {
+  static init() {
+    const saved = localStorage.getItem('ali_portfolio_theme') || 'cyan';
+    this.setTheme(saved);
+
+    const themeSelect = document.getElementById('theme-select');
+    if (themeSelect) {
+      themeSelect.value = saved;
+      themeSelect.addEventListener('change', (e) => {
+        this.setTheme(e.target.value);
+        if (window.soundFX) window.soundFX.playWhoosh();
+      });
+    }
+  }
+
+  static setTheme(theme) {
+    document.body.classList.remove('theme-cyan', 'theme-violet', 'theme-emerald', 'theme-amber');
+    document.body.classList.add(`theme-${theme}`);
+    localStorage.setItem('ali_portfolio_theme', theme);
+  }
+}
+window.ThemeManager = ThemeManager;
 
 document.addEventListener('DOMContentLoaded', () => {
   const data = window.PORTFOLIO_DATA;
 
-  // 1. Initialize Neural Particle Background
+  // 1. Initialize Theme Manager
+  ThemeManager.init();
+
+  // 2. Initialize Neural Particle Background
   if (window.NeuralCanvas) {
     new window.NeuralCanvas('neural-bg-canvas');
   }
 
-  // 2. Initialize Trilingual Localization
-  let i18n = null;
+  // 3. Initialize Trilingual Localization
   if (window.I18nManager) {
-    i18n = new window.I18nManager();
+    new window.I18nManager();
   }
 
-  // 3. Initialize AI Playground Demos & Neural Arcade Games
+  // 4. Initialize AI Playground Demos & Neural Arcade Games
   if (window.AIDemosManager) {
     new window.AIDemosManager();
   }
@@ -25,13 +51,60 @@ document.addEventListener('DOMContentLoaded', () => {
     new window.NeuralArcade();
   }
 
-  // 4. Render Hugging Face Models Grid
+  // 5. Initialize Cyber Terminal
+  if (window.CyberTerminal) {
+    new window.CyberTerminal('terminal-output', 'terminal-cli-input');
+  }
+
+  // 6. Interactive Mouse Spotlight Glow & 3D Tilt on Cards
+  const updateSpotlight = (e) => {
+    document.querySelectorAll('.cyber-card').forEach(card => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      card.style.setProperty('--mouse-x', `${x}px`);
+      card.style.setProperty('--mouse-y', `${y}px`);
+    });
+  };
+  window.addEventListener('mousemove', updateSpotlight);
+
+  // 7. Real-Time Audio Frequency Spectrum Visualizer
+  const spectrumCanvas = document.getElementById('audio-spectrum-canvas');
+  if (spectrumCanvas) {
+    const sCtx = spectrumCanvas.getContext('2d');
+    const drawSpectrum = () => {
+      sCtx.clearRect(0, 0, spectrumCanvas.width, spectrumCanvas.height);
+      const freq = window.soundFX ? window.soundFX.getFrequencyData() : null;
+
+      const bars = 8;
+      const barWidth = spectrumCanvas.width / bars - 2;
+
+      for (let i = 0; i < bars; i++) {
+        let val = 2;
+        if (freq && window.soundFX.enabled) {
+          val = Math.max(2, (freq[i * 2] / 255) * spectrumCanvas.height);
+        } else if (window.soundFX && window.soundFX.enabled) {
+          val = Math.sin(Date.now() * 0.005 + i) * 4 + 6;
+        }
+
+        sCtx.fillStyle = '#00f2fe';
+        sCtx.shadowBlur = 4;
+        sCtx.shadowColor = '#00f2fe';
+        sCtx.fillRect(i * (barWidth + 2), spectrumCanvas.height - val, barWidth, val);
+        sCtx.shadowBlur = 0;
+      }
+      requestAnimationFrame(drawSpectrum);
+    };
+    drawSpectrum();
+  }
+
+  // 8. Render Hugging Face Models Grid
   const renderHFModels = () => {
     const grid = document.getElementById('hf-models-grid');
     if (!grid || !data) return;
 
     grid.innerHTML = data.huggingface_models.map(m => `
-      <div class="cyber-card p-5 flex flex-col justify-between group">
+      <div class="cyber-card p-5 flex flex-col justify-between group hud-bracket">
         <div>
           <div class="flex items-start justify-between gap-2 mb-3">
             <span class="px-2 py-0.5 rounded text-[11px] font-mono font-semibold bg-cyan-950/60 border border-cyan-500/30 text-cyan-400">
@@ -65,7 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
     `).join('');
   };
 
-  // 5. Render GitHub Projects Grid with Category Filters
+  // 9. Render GitHub Projects Grid with Category Filters
   const renderProjects = (filter = 'all') => {
     const grid = document.getElementById('github-projects-grid');
     if (!grid || !data) return;
@@ -75,7 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
       : data.github_projects.filter(p => p.category === filter);
 
     grid.innerHTML = filtered.map(p => `
-      <div class="cyber-card p-5 flex flex-col justify-between group">
+      <div class="cyber-card p-5 flex flex-col justify-between group hud-bracket">
         <div>
           <div class="flex items-center justify-between mb-3">
             <span class="text-[11px] font-mono text-purple-400 bg-purple-950/50 px-2 py-0.5 rounded border border-purple-500/30">
@@ -110,7 +183,7 @@ document.addEventListener('DOMContentLoaded', () => {
     `).join('');
   };
 
-  // 6. Project Filter Tabs Event Listeners
+  // 10. Project Filter Tabs Event Listeners
   const filterBtns = document.querySelectorAll('.project-filter-btn');
   filterBtns.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -122,15 +195,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // 7. Render Work Experience Timeline
+  // 11. Render Work Experience Timeline
   const renderExperience = () => {
     const container = document.getElementById('experience-timeline');
     if (!container || !data) return;
 
-    container.innerHTML = data.experience.map((exp, idx) => `
+    container.innerHTML = data.experience.map((exp) => `
       <div class="relative pl-6 pb-8 border-l border-cyan-500/30 last:pb-0">
         <div class="absolute -left-[9px] top-0.5 w-4 h-4 rounded-full bg-cyan-950 border-2 border-cyan-400 shadow-[0_0_8px_#00f2fe]"></div>
-        <div class="cyber-card p-5 ml-2">
+        <div class="cyber-card p-5 ml-2 hud-bracket">
           <div class="flex flex-wrap items-center justify-between gap-2 mb-1.5">
             <h4 class="text-base font-bold text-white">${exp.role}</h4>
             <span class="text-xs font-mono text-cyan-400 bg-cyan-950/60 px-2 py-0.5 rounded border border-cyan-500/30">${exp.period}</span>
@@ -147,7 +220,7 @@ document.addEventListener('DOMContentLoaded', () => {
     `).join('');
   };
 
-  // 8. Render Education & Certifications
+  // 12. Render Education & Certifications
   const renderEducationAndCerts = () => {
     const eduContainer = document.getElementById('education-container');
     const certsContainer = document.getElementById('certs-container');
@@ -155,7 +228,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (eduContainer) {
       eduContainer.innerHTML = data.education.map(edu => `
-        <div class="cyber-card p-5 mb-4 border-l-4 border-l-cyan-400">
+        <div class="cyber-card p-5 mb-4 border-l-4 border-l-cyan-400 hud-bracket">
           <div class="flex flex-wrap items-center justify-between gap-2 mb-1">
             <h4 class="text-base font-bold text-white">${edu.degree}</h4>
             <span class="text-xs font-mono text-cyan-400">${edu.period}</span>
@@ -184,7 +257,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // 9. Tab Switching Logic for Demos & Games
+  // 13. Tab Switching Logic for Demos & Games
   const setupTabs = (tabGroupClass, contentGroupClass) => {
     const tabs = document.querySelectorAll(tabGroupClass);
     const contents = document.querySelectorAll(contentGroupClass);
@@ -207,7 +280,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupTabs('.demo-tab', '.demo-content');
   setupTabs('.game-tab', '.game-content');
 
-  // 10. Sound Toggle System
+  // 14. Sound Toggle System
   const soundBtn = document.getElementById('sound-toggle-btn');
   const updateSoundUI = () => {
     if (!soundBtn || !window.soundFX) return;
@@ -225,7 +298,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 11. Command Palette (HUD Terminal Cmd+K)
+  // 15. Command Palette (HUD Terminal Cmd+K)
   const cmdModal = document.getElementById('cmd-palette-modal');
   const cmdInput = document.getElementById('cmd-input');
   const cmdClose = document.getElementById('cmd-close');
@@ -283,6 +356,8 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('games-section')?.scrollIntoView({ behavior: 'smooth' });
       } else if (action === 'goto-projects') {
         document.getElementById('projects-section')?.scrollIntoView({ behavior: 'smooth' });
+      } else if (action === 'goto-terminal') {
+        document.getElementById('terminal-section')?.scrollIntoView({ behavior: 'smooth' });
       } else if (action === 'toggle-sound') {
         window.soundFX.toggle();
         updateSoundUI();
@@ -295,7 +370,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // 12. Resume Modal System
+  // 16. Resume Modal System
   const resumeModal = document.getElementById('resume-modal');
   const resumeBtn = document.querySelectorAll('.open-resume-btn');
   const resumeClose = document.getElementById('resume-close');

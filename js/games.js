@@ -11,6 +11,7 @@ class NeuralArcade {
     this.initRLPong();
     this.initVisionHunter();
     this.initRoboSpline();
+    this.initQuantumDecryption();
   }
 
   // --------------------------------------------------------------------------
@@ -765,6 +766,138 @@ class NeuralArcade {
 
     draw();
     loop();
+  }
+
+  // --------------------------------------------------------------------------
+  // GAME 4: QUANTUM NEURAL DECRYPTION (CYBER PATTERN HACKING ARCADE)
+  // --------------------------------------------------------------------------
+  initQuantumDecryption() {
+    const gridContainer = document.getElementById('quantum-grid');
+    const startBtn = document.getElementById('quantum-start-btn');
+    const scoreElem = document.getElementById('quantum-score');
+    const levelElem = document.getElementById('quantum-level');
+    const timerElem = document.getElementById('quantum-timer');
+    const statusElem = document.getElementById('quantum-status');
+
+    if (!gridContainer) return;
+
+    let level = 1;
+    let score = 0;
+    let sequence = [];
+    let playerSequence = [];
+    let isPlaying = false;
+    let acceptingInput = false;
+
+    const symbols = ['Ψ', 'Ω', 'Δ', 'Σ', 'Φ', 'λ', 'θ', 'π', 'μ'];
+    const colors = ['#00f2fe', '#a855f7', '#10b981', '#f59e0b', '#ec4899', '#3b82f6', '#14b8a6', '#8b5cf6', '#eab308'];
+
+    const renderGrid = () => {
+      gridContainer.innerHTML = '';
+      for (let i = 0; i < 9; i++) {
+        const btn = document.createElement('button');
+        btn.className = 'quantum-cell h-20 rounded-xl bg-gray-900/90 border border-gray-700/60 font-mono text-2xl font-bold transition-all flex items-center justify-center relative overflow-hidden select-none';
+        btn.dataset.index = i;
+        btn.innerHTML = `<span style="color: ${colors[i]}">${symbols[i]}</span>`;
+        btn.addEventListener('click', () => handleCellClick(i));
+        gridContainer.appendChild(btn);
+      }
+    };
+
+    const flashCell = (index, duration = 400) => {
+      return new Promise((resolve) => {
+        const cells = gridContainer.querySelectorAll('.quantum-cell');
+        const cell = cells[index];
+        if (!cell) return resolve();
+
+        cell.style.backgroundColor = colors[index];
+        cell.style.boxShadow = `0 0 25px ${colors[index]}`;
+        cell.querySelector('span').style.color = '#000';
+        if (window.soundFX) window.soundFX.playLaser();
+
+        setTimeout(() => {
+          cell.style.backgroundColor = '';
+          cell.style.boxShadow = '';
+          cell.querySelector('span').style.color = colors[index];
+          setTimeout(resolve, 150);
+        }, duration);
+      });
+    };
+
+    const playSequence = async () => {
+      acceptingInput = false;
+      if (statusElem) {
+        statusElem.textContent = 'NEURAL WEIGHTS MEMORIZING... OBSERVE SYNAPSE ACTIVATION';
+        statusElem.className = 'text-xs font-mono text-purple-400 animate-pulse';
+      }
+
+      await new Promise(r => setTimeout(r, 600));
+
+      for (const idx of sequence) {
+        await flashCell(idx, Math.max(250, 500 - level * 30));
+      }
+
+      acceptingInput = true;
+      playerSequence = [];
+      if (statusElem) {
+        statusElem.textContent = 'TRANSMIT SEQUENCE! REPRODUCE ACTIVATION PATTERN';
+        statusElem.className = 'text-xs font-mono text-cyan-400';
+      }
+    };
+
+    const handleCellClick = async (index) => {
+      if (!isPlaying || !acceptingInput) return;
+
+      flashCell(index, 200);
+      playerSequence.push(index);
+
+      const currentStep = playerSequence.length - 1;
+      if (playerSequence[currentStep] !== sequence[currentStep]) {
+        // Fail
+        isPlaying = false;
+        acceptingInput = false;
+        if (window.soundFX) window.soundFX.playMiss();
+        if (statusElem) {
+          statusElem.textContent = 'NEURAL DESYNCHRONIZATION! DECRYPTION FAILED';
+          statusElem.className = 'text-xs font-mono text-red-400 font-bold';
+        }
+        if (startBtn) startBtn.textContent = 'RE-INITIALIZE QUANTUM CORE';
+        return;
+      }
+
+      if (playerSequence.length === sequence.length) {
+        // Level complete!
+        score += level * 150;
+        level++;
+        if (scoreElem) scoreElem.textContent = score;
+        if (levelElem) levelElem.textContent = level;
+        if (window.soundFX) window.soundFX.playScore();
+
+        if (statusElem) {
+          statusElem.textContent = `QUANTUM LAYER ${level - 1} CRACKED! ADVANCING DEEPER...`;
+          statusElem.className = 'text-xs font-mono text-emerald-400 font-bold';
+        }
+
+        sequence.push(Math.floor(Math.random() * 9));
+        setTimeout(playSequence, 1000);
+      }
+    };
+
+    if (startBtn) {
+      startBtn.addEventListener('click', () => {
+        isPlaying = true;
+        level = 1;
+        score = 0;
+        sequence = [Math.floor(Math.random() * 9), Math.floor(Math.random() * 9)];
+        if (scoreElem) scoreElem.textContent = score;
+        if (levelElem) levelElem.textContent = level;
+        startBtn.textContent = 'RESTART DECRYPTION';
+        if (window.soundFX) window.soundFX.playPowerUp();
+        renderGrid();
+        playSequence();
+      });
+    }
+
+    renderGrid();
   }
 }
 

@@ -9,6 +9,7 @@ class AIDemosManager {
     this.initMedicalChatbot();
     this.initLinguaFlow();
     this.initRoboArmDemo();
+    this.initArchitectureVisualizer();
   }
 
   // --------------------------------------------------------------------------
@@ -657,6 +658,154 @@ class AIDemosManager {
     // Initialize
     solveIK(targetX, targetY);
     draw();
+  }
+
+  // --------------------------------------------------------------------------
+  // 5. NEURAL ARCHITECTURE LAYER EXPLORER (TRANSFORMER, VIT, DQN, KINEMATICS)
+  // --------------------------------------------------------------------------
+  initArchitectureVisualizer() {
+    const archSelect = document.getElementById('arch-model-select');
+    const container = document.getElementById('arch-layers-canvas');
+    const infoPanel = document.getElementById('arch-layer-info');
+    const forwardBtn = document.getElementById('arch-forward-btn');
+
+    if (!container || !infoPanel) return;
+
+    const architectures = {
+      transformer: {
+        name: 'Transformer Encoder-Decoder (LinguaFlow NMT)',
+        description: 'Multi-head self-attention sequence-to-sequence model with residual LayerNorm connections.',
+        layers: [
+          { name: 'Input Embeddings', shape: '[B, 512, 768]', desc: 'Token & positional sinusoidal embeddings E = Token(x) + PE(pos)', color: '#00f2fe' },
+          { name: 'Multi-Head Attention', shape: '[B, 8, 512, 64]', desc: 'Scaled Dot-Product Attention: softmax(Q·Kᵀ / √dₖ)·V across 8 parallel heads', color: '#8a2be2' },
+          { name: 'Add & LayerNorm', shape: '[B, 512, 768]', desc: 'Residual normalization: LN(x + Sublayer(x)) stabilizing gradient variance', color: '#10b981' },
+          { name: 'Feed-Forward Network', shape: '[B, 512, 3072]', desc: 'Two-layer linear transformation with GeLU activation: max(0, xW₁ + b₁)W₂', color: '#f59e0b' },
+          { name: 'Decoder Cross-Attn', shape: '[B, 8, 512, 64]', desc: 'Decoder attends over encoder output keys/values for multilingual target alignment', color: '#ec4899' },
+          { name: 'Linear Projection', shape: '[B, 512, 32000]', desc: 'Softmax vocabulary projection predicting next target token probabilities', color: '#00f2fe' }
+        ]
+      },
+      vit: {
+        name: 'Vision Transformer (Qalam-Net V2 OCR)',
+        description: 'Pioneering visual tokenization dividing 2D document pages into 16x16 patch sequences.',
+        layers: [
+          { name: 'Patch Partitioning', shape: '[B, 196, 768]', desc: 'Image flattened into N = (H·W)/P² patches with linear projection', color: '#00f2fe' },
+          { name: 'Class Token [CLS]', shape: '[B, 197, 768]', desc: 'Prepend learnable classification embedding token to patch sequence', color: '#f59e0b' },
+          { name: 'Positional Encoding', shape: '[B, 197, 768]', desc: '1D learnable spatial coordinates maintaining 2D spatial arrangement', color: '#10b981' },
+          { name: 'Transformer Blocks (x12)', shape: '[B, 197, 768]', desc: 'Deep stacked Multi-Head Self-Attention capturing long-range calligraphy strokes', color: '#8a2be2' },
+          { name: 'MLP Prediction Head', shape: '[B, Num_Classes]', desc: 'Dense layer predicting Arabic characters with 99.4% top-1 accuracy', color: '#ec4899' }
+        ]
+      },
+      dqn: {
+        name: 'Deep Q-Network (Trading & Pong RL Agent)',
+        description: 'Deep reinforcement learning policy mapping state observations to optimal Q-values.',
+        layers: [
+          { name: 'State Input Vector', shape: '[B, 8]', desc: 'Observation features: relative position, velocities, and distance telemetry', color: '#00f2fe' },
+          { name: 'Dense Layer 1 (ReLU)', shape: '[B, 128]', desc: 'Fully connected feature extractor with He normal weight initialization', color: '#10b981' },
+          { name: 'Dense Layer 2 (ReLU)', shape: '[B, 64]', desc: 'Higher-level abstraction layer extracting temporal action-value features', color: '#8a2be2' },
+          { name: 'Advantage & Value Stream', shape: '[B, 32]', desc: 'Dueling architecture decomposing Q(s,a) = V(s) + (A(s,a) - mean(A))', color: '#f59e0b' },
+          { name: 'Q-Value Output Head', shape: '[B, 3]', desc: 'Direct expected return for actions [Move_Up, Idle, Move_Down]', color: '#ec4899' }
+        ]
+      }
+    };
+
+    let currentArch = 'transformer';
+
+    const renderArchitecture = (archKey) => {
+      const arch = architectures[archKey];
+      if (!arch) return;
+
+      container.innerHTML = `
+        <div class="flex items-center justify-between pb-3 border-b border-gray-800">
+          <div>
+            <div class="text-sm font-bold text-white">${arch.name}</div>
+            <div class="text-xs text-gray-400">${arch.description}</div>
+          </div>
+          <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-cyan-950/60 border border-cyan-500/30 text-cyan-300">
+            ${arch.layers.length} CONNECTED STAGES
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mt-4">
+          ${arch.layers.map((layer, idx) => `
+            <div class="arch-layer-card p-3 rounded-xl bg-gray-900/90 border border-gray-800 hover:border-cyan-400 cursor-pointer transition-all group" data-idx="${idx}">
+              <div class="flex items-center justify-between mb-1.5">
+                <span class="text-[10px] font-mono text-gray-500">STAGE 0${idx + 1}</span>
+                <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-gray-950 text-cyan-300 border border-gray-800">${layer.shape}</span>
+              </div>
+              <div class="text-xs font-bold text-white group-hover:text-cyan-300 flex items-center gap-1.5 mb-1">
+                <span class="w-2 h-2 rounded-full" style="background-color: ${layer.color}"></span>
+                ${layer.name}
+              </div>
+              <div class="text-[11px] text-gray-400 line-clamp-2 leading-relaxed">
+                ${layer.desc}
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+
+      // Select first layer
+      showLayerInfo(arch.layers[0], 0);
+
+      // Bind card clicks
+      container.querySelectorAll('.arch-layer-card').forEach(card => {
+        card.addEventListener('click', () => {
+          const idx = parseInt(card.dataset.idx);
+          container.querySelectorAll('.arch-layer-card').forEach(c => c.classList.remove('border-cyan-400', 'bg-cyan-950/20'));
+          card.classList.add('border-cyan-400', 'bg-cyan-950/20');
+          showLayerInfo(arch.layers[idx], idx);
+          if (window.soundFX) window.soundFX.playClick();
+        });
+      });
+    };
+
+    const showLayerInfo = (layer, idx) => {
+      infoPanel.innerHTML = `
+        <div class="space-y-3 font-mono text-xs">
+          <div class="flex items-center justify-between pb-2 border-b border-gray-800">
+            <span class="text-cyan-400 font-bold">INSPECTING LAYER 0${idx + 1}:</span>
+            <span class="px-2 py-0.5 rounded bg-purple-950 text-purple-300 border border-purple-500/30">${layer.name}</span>
+          </div>
+          <div class="p-2.5 rounded bg-gray-900 border border-gray-800 flex justify-between">
+            <span class="text-gray-400">Tensor Dimensions:</span>
+            <span class="text-emerald-400 font-bold">${layer.shape}</span>
+          </div>
+          <div class="p-3 rounded bg-cyan-950/30 border border-cyan-500/20 text-gray-200 leading-relaxed text-[11px]">
+            <span class="text-cyan-400 font-bold">MATHEMATICAL FORMULATION:</span><br>
+            ${layer.desc}
+          </div>
+        </div>
+      `;
+    };
+
+    if (archSelect) {
+      archSelect.addEventListener('change', (e) => {
+        currentArch = e.target.value;
+        renderArchitecture(currentArch);
+        if (window.soundFX) window.soundFX.playWhoosh();
+      });
+    }
+
+    if (forwardBtn) {
+      forwardBtn.addEventListener('click', () => {
+        if (window.soundFX) window.soundFX.playPowerUp();
+        const cards = container.querySelectorAll('.arch-layer-card');
+        cards.forEach((c, i) => {
+          setTimeout(() => {
+            c.style.transform = 'scale(1.04)';
+            c.style.borderColor = '#00f2fe';
+            c.style.boxShadow = '0 0 20px rgba(0, 242, 254, 0.4)';
+            setTimeout(() => {
+              c.style.transform = '';
+              c.style.borderColor = '';
+              c.style.boxShadow = '';
+            }, 300);
+          }, i * 140);
+        });
+      });
+    }
+
+    renderArchitecture(currentArch);
   }
 }
 

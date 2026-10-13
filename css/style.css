@@ -1,16 +1,16 @@
 /* ============================================================================
-   ALI KHALID — CYBER-NEURAL MATRIX & ROBOTICS LAB STYLESHEET
-   Futuristic AI HUD, Glassmorphism, Glowing Neons, and RTL Support
+   ALI KHALID — ADVANCED CYBER-NEURAL MATRIX & ROBOTICS LAB STYLESHEET
+   Futuristic AI HUD, Glassmorphism, Theme Engine, and Mouse Spotlight Glow
    ============================================================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;700&family=Outfit:wght@300;400;500;600;700;800&display=swap');
 
 :root {
   --bg-deep: #050811;
-  --bg-card: rgba(11, 17, 32, 0.75);
-  --bg-card-hover: rgba(16, 26, 48, 0.88);
+  --bg-card: rgba(11, 17, 32, 0.78);
+  --bg-card-hover: rgba(16, 26, 48, 0.92);
   --border-neon: rgba(0, 242, 254, 0.25);
-  --border-glow: rgba(0, 242, 254, 0.5);
+  --border-glow: rgba(0, 242, 254, 0.6);
   --cyan-primary: #00f2fe;
   --cyan-glow: rgba(0, 242, 254, 0.4);
   --violet-primary: #8a2be2;
@@ -18,6 +18,30 @@
   --amber-primary: #f59e0b;
   --text-main: #f1f5f9;
   --text-muted: #94a3b8;
+  --mouse-x: 50%;
+  --mouse-y: 50%;
+}
+
+/* THEME PALETTES */
+body.theme-violet {
+  --cyan-primary: #c084fc;
+  --cyan-glow: rgba(192, 132, 252, 0.45);
+  --border-neon: rgba(192, 132, 252, 0.3);
+  --border-glow: rgba(192, 132, 252, 0.7);
+}
+
+body.theme-emerald {
+  --cyan-primary: #10b981;
+  --cyan-glow: rgba(16, 185, 129, 0.45);
+  --border-neon: rgba(16, 185, 129, 0.3);
+  --border-glow: rgba(16, 185, 129, 0.7);
+}
+
+body.theme-amber {
+  --cyan-primary: #f59e0b;
+  --cyan-glow: rgba(245, 158, 11, 0.45);
+  --border-neon: rgba(245, 158, 11, 0.3);
+  --border-glow: rgba(245, 158, 11, 0.7);
 }
 
 * {
@@ -34,7 +58,6 @@ html {
   overflow-x: hidden;
 }
 
-/* Arabic RTL support typography */
 html[dir="rtl"] {
   font-family: 'Cairo', 'Outfit', sans-serif;
 }
@@ -94,7 +117,7 @@ code, pre, .font-mono {
   z-index: 2;
 }
 
-/* Glassmorphism Cards */
+/* Glassmorphism Cards with Mouse Spotlight Glow */
 .cyber-card {
   background: var(--bg-card);
   backdrop-filter: blur(14px);
@@ -113,20 +136,59 @@ code, pre, .font-mono {
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(0, 242, 254, 0.6), transparent);
+  background: linear-gradient(90deg, transparent, var(--cyan-primary), transparent);
   opacity: 0;
   transition: opacity 0.3s ease;
+}
+
+/* Interactive Spotlight Radial Glow */
+.cyber-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(400px circle at var(--mouse-x) var(--mouse-y), rgba(0, 242, 254, 0.08), transparent 40%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
 }
 
 .cyber-card:hover {
   background: var(--bg-card-hover);
   border-color: var(--border-glow);
-  box-shadow: 0 10px 30px -10px rgba(0, 242, 254, 0.15), 0 0 20px rgba(0, 242, 254, 0.08);
+  box-shadow: 0 10px 30px -10px var(--cyan-glow), 0 0 20px rgba(0, 242, 254, 0.08);
   transform: translateY(-2px);
 }
 
-.cyber-card:hover::before {
+.cyber-card:hover::before,
+.cyber-card:hover::after {
   opacity: 1;
+}
+
+/* Cyberpunk Corner Brackets */
+.hud-bracket {
+  position: relative;
+}
+.hud-bracket::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  width: 10px;
+  height: 10px;
+  border-top: 2px solid var(--cyan-primary);
+  border-left: 2px solid var(--cyan-primary);
+  pointer-events: none;
+}
+.hud-bracket::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: 10px;
+  height: 10px;
+  border-bottom: 2px solid var(--cyan-primary);
+  border-right: 2px solid var(--cyan-primary);
+  pointer-events: none;
 }
 
 /* Glowing Neon Buttons */
@@ -153,7 +215,7 @@ code, pre, .font-mono {
 .btn-neon:hover {
   background: var(--cyan-primary);
   color: #050811;
-  box-shadow: 0 0 25px rgba(0, 242, 254, 0.6), 0 0 40px rgba(0, 242, 254, 0.3);
+  box-shadow: 0 0 25px var(--cyan-primary), 0 0 40px var(--cyan-glow);
   transform: translateY(-1px);
 }
 
@@ -184,7 +246,7 @@ code, pre, .font-mono {
 
 /* Neon Text Glow */
 .text-glow-cyan {
-  text-shadow: 0 0 15px rgba(0, 242, 254, 0.6), 0 0 30px rgba(0, 242, 254, 0.25);
+  text-shadow: 0 0 15px var(--cyan-glow), 0 0 30px rgba(0, 242, 254, 0.25);
 }
 
 .text-glow-violet {
@@ -197,15 +259,15 @@ code, pre, .font-mono {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background-color: #10b981;
-  box-shadow: 0 0 8px #10b981;
+  background-color: var(--cyan-primary);
+  box-shadow: 0 0 8px var(--cyan-primary);
   animation: pulse-ring 2s infinite;
 }
 
 @keyframes pulse-ring {
-  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
-  70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
-  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 242, 254, 0.7); }
+  70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(0, 242, 254, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 242, 254, 0); }
 }
 
 /* Cyber Terminal Header */
@@ -249,6 +311,13 @@ code, pre, .font-mono {
   border-color: var(--cyan-primary);
   color: var(--cyan-primary);
   box-shadow: 0 0 12px rgba(0, 242, 254, 0.25);
+}
+
+/* Real-Time Audio Frequency Spectrum Visualizer Canvas */
+#audio-spectrum-canvas {
+  width: 65px;
+  height: 18px;
+  border-radius: 4px;
 }
 
 /* Command Palette Overlay */
@@ -323,17 +392,18 @@ code, pre, .font-mono {
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   background: rgba(9, 14, 26, 0.85);
-  border: 1px solid rgba(0, 242, 254, 0.2);
+  border: 1px solid var(--border-neon);
   border-radius: 9999px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 242, 254, 0.08);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 15px var(--cyan-glow);
 }
 
-/* Hero Portrait Hologram Ring */
+/* Hero Portrait Hologram Ring with 3D Depth */
 .hologram-avatar-container {
   position: relative;
-  width: 220px;
-  height: 220px;
+  width: 230px;
+  height: 230px;
   margin: 0 auto;
+  perspective: 800px;
 }
 
 .hologram-avatar-container::before {
@@ -341,7 +411,7 @@ code, pre, .font-mono {
   position: absolute;
   inset: -8px;
   border-radius: 50%;
-  border: 2px dashed rgba(0, 242, 254, 0.5);
+  border: 2px dashed var(--cyan-primary);
   animation: rotate-ring 24s linear infinite;
 }
 
@@ -350,7 +420,7 @@ code, pre, .font-mono {
   position: absolute;
   inset: -16px;
   border-radius: 50%;
-  border: 1px solid rgba(138, 43, 226, 0.4);
+  border: 1px solid var(--violet-primary);
   animation: rotate-ring-rev 36s linear infinite;
 }
 
@@ -370,5 +440,19 @@ code, pre, .font-mono {
   border-radius: 50%;
   object-fit: cover;
   border: 3px solid var(--cyan-primary);
-  box-shadow: 0 0 30px rgba(0, 242, 254, 0.5), inset 0 0 20px rgba(0, 242, 254, 0.4);
+  box-shadow: 0 0 35px var(--cyan-glow), inset 0 0 20px rgba(0, 242, 254, 0.4);
+  transition: transform 0.3s ease;
+}
+
+.hologram-avatar-container:hover .hologram-avatar-img {
+  transform: scale(1.03) rotateZ(1deg);
+}
+
+/* Matrix Code Rain Canvas (overlay) */
+#matrix-canvas-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.18;
 }

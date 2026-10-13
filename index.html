@@ -65,6 +65,7 @@
           <a href="#models-section" data-i18n="nav_models" class="text-gray-300 hover:text-cyan-400 transition-colors">HF Models</a>
           <a href="#demos-section" data-i18n="nav_demos" class="text-gray-300 hover:text-cyan-400 transition-colors">AI Playground</a>
           <a href="#games-section" data-i18n="nav_games" class="text-gray-300 hover:text-cyan-400 transition-colors">Neural Arcade</a>
+          <a href="#terminal-section" class="text-gray-300 hover:text-cyan-400 transition-colors">CLI Terminal</a>
           <a href="#projects-section" data-i18n="nav_projects" class="text-gray-300 hover:text-cyan-400 transition-colors">Projects</a>
           <a href="#experience-section" data-i18n="nav_experience" class="text-gray-300 hover:text-cyan-400 transition-colors">Timeline</a>
           <a href="#skills-section" data-i18n="nav_skills" class="text-gray-300 hover:text-cyan-400 transition-colors">Skills</a>
@@ -73,11 +74,24 @@
         <!-- Right HUD Utilities -->
         <div class="flex items-center gap-2 sm:gap-3">
           
+          <!-- Real-Time Audio Spectrum Canvas -->
+          <canvas id="audio-spectrum-canvas" width="65" height="18" class="hidden sm:inline bg-gray-950/60 border border-gray-800 rounded px-1" title="Real-time Audio Spectrum"></canvas>
+
           <!-- Sound Toggle Button -->
           <button id="sound-toggle-btn" class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-gray-900/80 border border-gray-700/60 hover:border-cyan-400 text-gray-300 transition-all text-xs" title="Toggle Sci-Fi Sound Effects">
             <i data-lucide="volume-x" class="w-4 h-4 text-gray-400"></i>
             <span class="hidden sm:inline font-mono">SFX</span>
           </button>
+
+          <!-- Theme Palette Selector -->
+          <div class="relative hidden sm:flex items-center bg-gray-900/80 border border-gray-700/60 rounded-lg p-0.5" title="Switch Cyber Theme Palette">
+            <select id="theme-select" class="bg-transparent text-xs font-mono text-cyan-300 px-2 py-1 rounded focus:outline-none cursor-pointer">
+              <option value="cyan" class="bg-gray-900 text-white">⚡ Cyan</option>
+              <option value="violet" class="bg-gray-900 text-white">🟣 Violet</option>
+              <option value="emerald" class="bg-gray-900 text-white">🟢 Emerald</option>
+              <option value="amber" class="bg-gray-900 text-white">🟠 Amber</option>
+            </select>
+          </div>
 
           <!-- Trilingual Switcher -->
           <div class="relative flex items-center bg-gray-900/80 border border-gray-700/60 rounded-lg p-0.5">
@@ -186,7 +200,7 @@
               <span class="text-cyan-400">root@ali-khalid:~#</span>
               <span data-i18n="cmd_palette_hint">Press Cmd+K or Ctrl+K for Neural HUD Command Terminal</span>
             </span>
-            <span class="px-2 py-0.5 rounded bg-gray-800 text-[10px] text-gray-300 border border-gray-700">HUD v2.4</span>
+            <span class="px-2 py-0.5 rounded bg-gray-800 text-[10px] text-gray-300 border border-gray-700">HUD v3.0</span>
           </div>
 
         </div>
@@ -199,22 +213,22 @@
     <section class="py-6 px-4 sm:px-8 border-y border-gray-800/80 bg-gray-950/40">
       <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4">
         
-        <div class="cyber-card p-4 text-center">
+        <div class="cyber-card p-4 text-center hud-bracket">
           <div class="text-3xl font-extrabold font-mono text-cyan-400 text-glow-cyan">4+</div>
           <div class="text-xs text-gray-400 mt-1 font-mono" data-i18n="stats_exp">Years Experience</div>
         </div>
 
-        <div class="cyber-card p-4 text-center">
+        <div class="cyber-card p-4 text-center hud-bracket">
           <div class="text-3xl font-extrabold font-mono text-purple-400 text-glow-violet">1,200+</div>
           <div class="text-xs text-gray-400 mt-1 font-mono" data-i18n="stats_downloads">HF Model Downloads</div>
         </div>
 
-        <div class="cyber-card p-4 text-center">
+        <div class="cyber-card p-4 text-center hud-bracket">
           <div class="text-3xl font-extrabold font-mono text-emerald-400">61st</div>
           <div class="text-xs text-gray-400 mt-1 font-mono" data-i18n="stats_ecpc">ECPC Finalist (Top 10%)</div>
         </div>
 
-        <div class="cyber-card p-4 text-center">
+        <div class="cyber-card p-4 text-center hud-bracket">
           <div class="text-3xl font-extrabold font-mono text-amber-400">+15%</div>
           <div class="text-xs text-gray-400 mt-1 font-mono" data-i18n="stats_precision">Robotic Precision Gain</div>
         </div>
@@ -247,6 +261,10 @@
             <i data-lucide="pencil" class="inline w-3.5 h-3.5 mr-1"></i>
             <span data-i18n="tab_ocr">Qalam-Net OCR</span>
           </button>
+          <button class="tab-pill demo-tab" data-target="demo-layers">
+            <i data-lucide="git-branch" class="inline w-3.5 h-3.5 mr-1"></i>
+            <span>Architecture Explorer</span>
+          </button>
           <button class="tab-pill demo-tab" data-target="demo-medical">
             <i data-lucide="stethoscope" class="inline w-3.5 h-3.5 mr-1"></i>
             <span data-i18n="tab_medical">Qwen Medical AI</span>
@@ -263,7 +281,7 @@
 
         <!-- 1. OCR Demo Container -->
         <div id="demo-ocr" class="demo-content">
-          <div class="cyber-card p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+          <div class="cyber-card p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center hud-bracket">
             
             <div class="lg:col-span-6 space-y-4">
               <div class="flex items-center justify-between">
@@ -319,9 +337,37 @@
           </div>
         </div>
 
-        <!-- 2. Medical Chatbot Demo Container -->
+        <!-- 2. Neural Architecture Explorer (NEW FEATURE) -->
+        <div id="demo-layers" class="demo-content hidden">
+          <div class="cyber-card p-6 max-w-5xl mx-auto space-y-6 hud-bracket">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <span class="text-xs font-mono text-cyan-400 flex items-center gap-1.5">
+                <i data-lucide="layers" class="w-4 h-4"></i>
+                DEEP NEURAL NETWORK ARCHITECTURE INSPECTOR
+              </span>
+              <div class="flex items-center gap-2">
+                <select id="arch-model-select" class="bg-gray-900 border border-gray-700 rounded px-2.5 py-1 text-xs font-mono text-cyan-300">
+                  <option value="transformer">Transformer Seq2Seq (LinguaFlow NMT)</option>
+                  <option value="vit">Vision Transformer (Qalam-Net OCR)</option>
+                  <option value="dqn">Deep Q-Network (Reinforcement Policy)</option>
+                </select>
+                <button id="arch-forward-btn" class="btn-neon text-xs py-1 px-3">
+                  <i data-lucide="play" class="w-3.5 h-3.5"></i> FORWARD PASS
+                </button>
+              </div>
+            </div>
+
+            <!-- Layer Cards -->
+            <div id="arch-layers-canvas"></div>
+
+            <!-- Detailed Stage Telemetry -->
+            <div id="arch-layer-info" class="p-4 bg-gray-950/80 border border-gray-800 rounded-xl"></div>
+          </div>
+        </div>
+
+        <!-- 3. Medical Chatbot Demo Container -->
         <div id="demo-medical" class="demo-content hidden">
-          <div class="cyber-card p-6 max-w-4xl mx-auto">
+          <div class="cyber-card p-6 max-w-4xl mx-auto hud-bracket">
             
             <div class="terminal-bar mb-4">
               <div class="terminal-dots">
@@ -368,9 +414,9 @@
           </div>
         </div>
 
-        <!-- 3. LinguaFlow Translation Demo Container -->
+        <!-- 4. LinguaFlow Translation Demo Container -->
         <div id="demo-translation" class="demo-content hidden">
-          <div class="cyber-card p-6 max-w-4xl mx-auto space-y-5">
+          <div class="cyber-card p-6 max-w-4xl mx-auto space-y-5 hud-bracket">
             
             <div class="flex flex-wrap items-center justify-between gap-3">
               <span class="text-xs font-mono text-cyan-400">LINGUAFLOW MULTILINGUAL TRANSLATION (EN / AR / JA)</span>
@@ -416,9 +462,9 @@
           </div>
         </div>
 
-        <!-- 4. Robotic Arm IK Demo Container -->
+        <!-- 5. Robotic Arm IK Demo Container -->
         <div id="demo-roboarm" class="demo-content hidden">
-          <div class="cyber-card p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+          <div class="cyber-card p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center hud-bracket">
             
             <div class="lg:col-span-7 space-y-3">
               <div class="flex justify-between items-center">
@@ -506,11 +552,15 @@
             <i data-lucide="navigation" class="inline w-3.5 h-3.5 mr-1"></i>
             <span data-i18n="tab_game_spline">Robo-Spline</span>
           </button>
+          <button class="tab-pill game-tab" data-target="game-quantum">
+            <i data-lucide="cpu" class="inline w-3.5 h-3.5 mr-1"></i>
+            <span>Quantum Decryption</span>
+          </button>
         </div>
 
         <!-- GAME 1: RL PONG -->
         <div id="game-rl-pong" class="game-content">
-          <div class="cyber-card p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+          <div class="cyber-card p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center hud-bracket">
             
             <div class="lg:col-span-8 space-y-3">
               <div class="flex justify-between items-center">
@@ -572,7 +622,7 @@
 
         <!-- GAME 2: VISION HUNTER -->
         <div id="game-vision-hunter" class="game-content hidden">
-          <div class="cyber-card p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+          <div class="cyber-card p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center hud-bracket">
             
             <div class="lg:col-span-8 space-y-3">
               <div class="flex justify-between items-center">
@@ -623,7 +673,7 @@
 
         <!-- GAME 3: ROBO-SPLINE NAVIGATOR -->
         <div id="game-robo-spline" class="game-content hidden">
-          <div class="cyber-card p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+          <div class="cyber-card p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center hud-bracket">
             
             <div class="lg:col-span-8 space-y-3">
               <div class="flex justify-between items-center">
@@ -671,13 +721,109 @@
           </div>
         </div>
 
+        <!-- GAME 4: QUANTUM DECRYPTION (NEW FEATURE) -->
+        <div id="game-quantum" class="game-content hidden">
+          <div class="cyber-card p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center hud-bracket">
+            
+            <div class="lg:col-span-7 space-y-3">
+              <div class="flex justify-between items-center">
+                <span class="text-xs font-mono text-purple-400">SYNAPSE ACTIVATION PATTERN MEMORY</span>
+                <div class="flex gap-4 text-xs font-mono">
+                  <span>LEVEL: <strong id="quantum-level" class="text-purple-400">1</strong></span>
+                  <span>SCORE: <strong id="quantum-score" class="text-emerald-400">0</strong></span>
+                </div>
+              </div>
+
+              <!-- 3x3 Quantum Grid -->
+              <div id="quantum-grid" class="grid grid-cols-3 gap-3 p-4 bg-gray-950/80 border border-purple-500/30 rounded-xl"></div>
+
+              <div class="flex items-center justify-between pt-1">
+                <button id="quantum-start-btn" class="btn-neon-violet text-xs py-1.5 px-4">START DECRYPTION</button>
+                <span id="quantum-status" class="text-xs font-mono text-gray-400">CLICK START TO COMMENCE DECRYPTION</span>
+              </div>
+            </div>
+
+            <div class="lg:col-span-5 bg-gray-950/80 border border-gray-800 rounded-xl p-5 space-y-4">
+              <div class="terminal-bar mb-2">
+                <div class="terminal-dots">
+                  <span class="terminal-dot bg-red-500"></span>
+                  <span class="terminal-dot bg-yellow-500"></span>
+                  <span class="terminal-dot bg-emerald-500"></span>
+                </div>
+                <span class="text-[11px] font-mono text-purple-400">QUANTUM MEMORY SPECS</span>
+              </div>
+
+              <div class="space-y-2 text-xs font-mono text-gray-300">
+                <div class="p-2.5 rounded bg-gray-900 border border-gray-800">
+                  <span class="text-purple-400 font-bold">PROTOCOL:</span> Cryptographic tensor weight sequence matching testing neural memory & reflex.
+                </div>
+                <div class="p-2.5 rounded bg-gray-900 border border-gray-800">
+                  <span class="text-cyan-400 font-bold">COMPLEXITY:</span> Sequence scales in length with adaptive flashing speed (T_delay = 500 - 30·L).
+                </div>
+              </div>
+
+              <div class="p-3 rounded bg-purple-950/30 border border-purple-500/20 text-[11px] text-gray-300 leading-relaxed font-mono">
+                <span class="text-purple-400 font-bold">OBJECTIVE:</span> Crack consecutive neural layers to achieve Master Neural Cryptanalyst rating.
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         INTERACTIVE CYBER AI SHELL TERMINAL (NEW MAJOR FEATURE)
+         ====================================================================== -->
+    <section id="terminal-section" class="py-16 px-4 sm:px-8">
+      <div class="max-w-5xl mx-auto">
+        
+        <div class="text-center max-w-3xl mx-auto mb-8">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-emerald-950/40 border border-emerald-500/30 text-emerald-400 text-xs font-mono mb-2">
+            <i data-lucide="terminal" class="w-3.5 h-3.5"></i>
+            DIRECT KERNEL ACCESS
+          </div>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-white">
+            INTERACTIVE CYBER AI TERMINAL
+          </h2>
+          <p class="text-sm text-gray-400 mt-1">
+            Interact directly with Ali Khalid's AI research node via UNIX commands, live inference queries, and matrix routines.
+          </p>
+        </div>
+
+        <div class="cyber-card bg-gray-950/95 border border-cyan-500/40 shadow-[0_0_35px_rgba(0,242,254,0.15)] rounded-xl overflow-hidden hud-bracket">
+          <div class="terminal-bar">
+            <div class="terminal-dots">
+              <span class="terminal-dot bg-red-500"></span>
+              <span class="terminal-dot bg-yellow-500"></span>
+              <span class="terminal-dot bg-emerald-500"></span>
+            </div>
+            <span class="text-xs font-mono text-cyan-400 font-bold">ali-khalid@ai-research-core:~ (zsh)</span>
+            <div class="flex items-center gap-2">
+              <span class="text-[10px] font-mono text-gray-400">TTY: 0</span>
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            </div>
+          </div>
+
+          <!-- Terminal Output Screen -->
+          <div id="terminal-output" class="p-5 h-80 overflow-y-auto space-y-1 bg-black/60 font-mono text-xs select-text"></div>
+
+          <!-- Command Input Bar -->
+          <div class="p-3 bg-gray-900/90 border-t border-gray-800 flex items-center gap-2 font-mono text-xs">
+            <span class="text-emerald-400 font-bold">ali-khalid@ai-core:~$</span>
+            <input id="terminal-cli-input" type="text" placeholder="Type command ('help', 'models', 'predict', 'matrix')..." class="flex-1 bg-transparent text-white focus:outline-none font-mono">
+            <span class="text-[10px] text-gray-500">[ENTER TO TRANSMIT]</span>
+          </div>
+        </div>
+
       </div>
     </section>
 
     <!-- ======================================================================
          HUGGING FACE MODEL HUB
          ====================================================================== -->
-    <section id="models-section" class="py-16 px-4 sm:px-8">
+    <section id="models-section" class="py-16 px-4 sm:px-8 border-t border-gray-800/80 bg-gray-950/30">
       <div class="max-w-7xl mx-auto">
         
         <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
@@ -708,7 +854,7 @@
     <!-- ======================================================================
          GITHUB PROJECTS & RESEARCH
          ====================================================================== -->
-    <section id="projects-section" class="py-16 px-4 sm:px-8 border-t border-gray-800/80 bg-gray-950/30">
+    <section id="projects-section" class="py-16 px-4 sm:px-8">
       <div class="max-w-7xl mx-auto">
         
         <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
@@ -749,7 +895,7 @@
     <!-- ======================================================================
          EXPERIENCE & EDUCATION TIMELINE
          ====================================================================== -->
-    <section id="experience-section" class="py-16 px-4 sm:px-8">
+    <section id="experience-section" class="py-16 px-4 sm:px-8 border-t border-gray-800/80 bg-gray-950/30">
       <div class="max-w-7xl mx-auto">
         
         <div class="text-center max-w-3xl mx-auto mb-12">
@@ -803,7 +949,7 @@
     <!-- ======================================================================
          SKILLS MATRIX
          ====================================================================== -->
-    <section id="skills-section" class="py-16 px-4 sm:px-8 border-t border-gray-800/80 bg-gray-950/40">
+    <section id="skills-section" class="py-16 px-4 sm:px-8">
       <div class="max-w-7xl mx-auto">
         
         <div class="text-center max-w-3xl mx-auto mb-12">
@@ -822,7 +968,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           
           <!-- Machine Learning -->
-          <div class="cyber-card p-5">
+          <div class="cyber-card p-5 hud-bracket">
             <div class="text-sm font-mono font-bold text-cyan-400 mb-3 flex items-center gap-2">
               <i data-lucide="brain" class="w-4 h-4"></i>
               MACHINE LEARNING
@@ -839,7 +985,7 @@
           </div>
 
           <!-- NLP -->
-          <div class="cyber-card p-5">
+          <div class="cyber-card p-5 hud-bracket">
             <div class="text-sm font-mono font-bold text-purple-400 mb-3 flex items-center gap-2">
               <i data-lucide="message-square" class="w-4 h-4"></i>
               NATURAL LANGUAGE
@@ -856,7 +1002,7 @@
           </div>
 
           <!-- Computer Vision -->
-          <div class="cyber-card p-5">
+          <div class="cyber-card p-5 hud-bracket">
             <div class="text-sm font-mono font-bold text-emerald-400 mb-3 flex items-center gap-2">
               <i data-lucide="eye" class="w-4 h-4"></i>
               COMPUTER VISION
@@ -873,7 +1019,7 @@
           </div>
 
           <!-- Robotics & Mechatronics -->
-          <div class="cyber-card p-5">
+          <div class="cyber-card p-5 hud-bracket">
             <div class="text-sm font-mono font-bold text-amber-400 mb-3 flex items-center gap-2">
               <i data-lucide="bot" class="w-4 h-4"></i>
               ROBOTICS & MECHATRONICS
@@ -897,8 +1043,8 @@
     <!-- ======================================================================
          CONTACT & INITIATE TRANSMISSION
          ====================================================================== -->
-    <section id="contact-section" class="py-16 px-4 sm:px-8">
-      <div class="max-w-4xl mx-auto cyber-card p-8 text-center space-y-6">
+    <section id="contact-section" class="py-16 px-4 sm:px-8 border-t border-gray-800/80 bg-gray-950/40">
+      <div class="max-w-4xl mx-auto cyber-card p-8 text-center space-y-6 hud-bracket">
         
         <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-cyan-950/40 border border-cyan-500/30 text-cyan-400 text-xs font-mono">
           <i data-lucide="radio" class="w-3.5 h-3.5"></i>
@@ -990,12 +1136,16 @@
           <span class="text-[10px] text-gray-500">G M</span>
         </div>
         <div class="cmd-item p-2.5 rounded-lg bg-gray-900/60 hover:bg-cyan-950/60 hover:border-cyan-500/40 border border-transparent flex items-center justify-between cursor-pointer text-gray-200 transition-all" data-action="goto-demos">
-          <span class="flex items-center gap-2"><i data-lucide="zap" class="w-4 h-4 text-emerald-400"></i> Open AI Playground (OCR / Medical / RoboArm)</span>
+          <span class="flex items-center gap-2"><i data-lucide="zap" class="w-4 h-4 text-emerald-400"></i> Open AI Playground (OCR / Architecture / RoboArm)</span>
           <span class="text-[10px] text-gray-500">G D</span>
         </div>
         <div class="cmd-item p-2.5 rounded-lg bg-gray-900/60 hover:bg-cyan-950/60 hover:border-cyan-500/40 border border-transparent flex items-center justify-between cursor-pointer text-gray-200 transition-all" data-action="goto-games">
-          <span class="flex items-center gap-2"><i data-lucide="gamepad-2" class="w-4 h-4 text-purple-400"></i> Play Neural Arcade Games (RL Pong / Vision Hunter)</span>
+          <span class="flex items-center gap-2"><i data-lucide="gamepad-2" class="w-4 h-4 text-purple-400"></i> Play Neural Arcade Games (4 Engineering Games)</span>
           <span class="text-[10px] text-gray-500">G A</span>
+        </div>
+        <div class="cmd-item p-2.5 rounded-lg bg-gray-900/60 hover:bg-cyan-950/60 hover:border-cyan-500/40 border border-transparent flex items-center justify-between cursor-pointer text-gray-200 transition-all" data-action="goto-terminal">
+          <span class="flex items-center gap-2"><i data-lucide="terminal" class="w-4 h-4 text-emerald-400"></i> Open Cyber AI Shell Terminal</span>
+          <span class="text-[10px] text-gray-500">G T</span>
         </div>
         <div class="cmd-item p-2.5 rounded-lg bg-gray-900/60 hover:bg-cyan-950/60 hover:border-cyan-500/40 border border-transparent flex items-center justify-between cursor-pointer text-gray-200 transition-all" data-action="goto-projects">
           <span class="flex items-center gap-2"><i data-lucide="code" class="w-4 h-4 text-amber-400"></i> View GitHub Projects & ECPC Solutions</span>
@@ -1050,6 +1200,7 @@
   <script src="js/particles.js"></script>
   <script src="js/demos.js"></script>
   <script src="js/games.js"></script>
+  <script src="js/terminal.js"></script>
   <script src="js/i18n.js"></script>
   <script src="js/main.js"></script>
 
