@@ -254,9 +254,9 @@ const PORTFOLIO_DATA = {
 
   experience: [
     {
-      role: "AI Trainer & Machine Learning Engineer",
-      role_ar: "مدرب ذكاء اصطناعي ومهندس تعلم آلي",
-      role_ja: "AIトレーナー ＆ 機械学習エンジニア",
+      role: "AI Engineer & Machine Learning Specialist",
+      role_ar: "مهندس ذكاء اصطناعي ومتخصص تعلم آلي",
+      role_ja: "AIエンジニア ＆ 機械学習スペシャリスト",
       company: "Outlier AI",
       period: "Jan 2023 – Present",
       period_ar: "يناير 2023 – حتى الآن",
@@ -264,17 +264,17 @@ const PORTFOLIO_DATA = {
       badge: "Current",
       highlights: [
         "Collaborated with data scientists to refine LLM training methodologies, increasing model accuracy by 15% over 6 months.",
-        "Designed and curated training curriculum simplifying complex transformer & RL concepts across diverse technical teams.",
+        "Engineered and evaluated advanced transformer & RL model architectures across diverse technical workflows.",
         "Led interactive workshops on cutting-edge generative AI capabilities and RLHF best practice adoption."
       ],
       highlights_ar: [
         "التعاون مع علماء البيانات لتحسين منهجيات تدريب النماذج اللغوية، مما رفع دقة النماذج بنسبة 15% خلال 6 أشهر.",
-        "تصميم مواد تدريبية متخصصة لتبسيط مفاهيم الذكاء الاصطناعي المعقدة للفرق التقنية المختلفة.",
+        "هندسة وتقييم نماذج المحولات وبنى التعلم المعزز المتقدمة لمختلف خطوط العمل التقنية.",
         "قيادة ورش عمل تفاعلية حول أحدث قدرات الذكاء الاصطناعي التوليدي والتعلم المعزز بملاحظات البشر (RLHF)."
       ],
       highlights_ja: [
         "データサイエンティストと協業しLLMの学習手法を改善、6ヶ月でモデル精度を15%向上。",
-        "トランスフォーマーや強化学習の高度な概念を平易に解説する技術研修カリキュラムを策定。",
+        "高度なトランスフォーマーおよび強化学習モデルの設計・評価を主導。",
         "生成AIの最新機能とRLHF（人間フィードバックによる強化学習）の導入に関するワークショップを主導。"
       ]
     },
