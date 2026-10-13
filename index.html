@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ali Khalid | AI Engineer, Deep Learning Researcher & Robotics</title>
+  <meta name="description" content="Portfolio of Ali Khalid — AI Engineer & Deep Learning Researcher specializing in Multilingual NLP, Arabic OCR Transformers, Computer Vision, Reinforcement Learning, and Mechatronics.">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Ali Khalid | AI Engineer & Deep Learning Researcher">
+  <meta property="og:description" content="Interactive portfolio featuring Hugging Face models, GitHub repositories, playable engineering games, and live AI playgrounds.">
+  <meta property="og:image" content="assets/images/avatar.jpg">
+  <meta property="og:type" content="website">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            cyan: { 400: '#00f2fe', 500: '#00d2fe' },
+            violet: { 500: '#8a2be2' }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-[#050811] text-slate-100 antialiased selection:bg-cyan-500/30 selection:text-cyan-300">
+
+  <!-- Background Interactive Neural Canvas -->
+  <canvas id="neural-bg-canvas"></canvas>
+
+  <!-- Subtle Cyber Grid Texture -->
+  <div class="cyber-grid-overlay"></div>
+
+  <!-- Main Application Wrapper -->
+  <div class="main-wrapper min-h-screen flex flex-col">
+
+    <!-- ======================================================================
+         STICKY HUD NAVIGATION
+         ====================================================================== -->
+    <header class="w-full px-4 sm:px-8 py-3 sticky top-3 z-50">
+      <div class="max-w-7xl mx-auto hud-nav px-4 sm:px-6 py-2.5 flex items-center justify-between gap-4">
+        
+        <!-- Call-sign / Logo -->
+        <a href="#" class="flex items-center gap-2.5 group">
+          <span class="pulse-indicator"></span>
+          <div class="font-mono text-xs sm:text-sm font-bold tracking-wider text-white group-hover:text-cyan-400 transition-colors">
+            ALI_KHALID<span class="text-cyan-400 font-normal">::AI_LAB</span>
+          </div>
+        </a>
+
+        <!-- Desktop Navigation Links -->
+        <nav class="hidden lg:flex items-center gap-5 text-xs font-mono">
+          <a href="#overview" data-i18n="nav_home" class="text-gray-300 hover:text-cyan-400 transition-colors">Overview</a>
+          <a href="#models-section" data-i18n="nav_models" class="text-gray-300 hover:text-cyan-400 transition-colors">HF Models</a>
+          <a href="#demos-section" data-i18n="nav_demos" class="text-gray-300 hover:text-cyan-400 transition-colors">AI Playground</a>
+          <a href="#games-section" data-i18n="nav_games" class="text-gray-300 hover:text-cyan-400 transition-colors">Neural Arcade</a>
+          <a href="#projects-section" data-i18n="nav_projects" class="text-gray-300 hover:text-cyan-400 transition-colors">Projects</a>
+          <a href="#experience-section" data-i18n="nav_experience" class="text-gray-300 hover:text-cyan-400 transition-colors">Timeline</a>
+          <a href="#skills-section" data-i18n="nav_skills" class="text-gray-300 hover:text-cyan-400 transition-colors">Skills</a>
+        </nav>
+
+        <!-- Right HUD Utilities -->
+        <div class="flex items-center gap-2 sm:gap-3">
+          
+          <!-- Sound Toggle Button -->
+          <button id="sound-toggle-btn" class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-gray-900/80 border border-gray-700/60 hover:border-cyan-400 text-gray-300 transition-all text-xs" title="Toggle Sci-Fi Sound Effects">
+            <i data-lucide="volume-x" class="w-4 h-4 text-gray-400"></i>
+            <span class="hidden sm:inline font-mono">SFX</span>
+          </button>
+
+          <!-- Trilingual Switcher -->
+          <div class="relative flex items-center bg-gray-900/80 border border-gray-700/60 rounded-lg p-0.5">
+            <select id="lang-select" class="bg-transparent text-xs font-mono text-cyan-300 px-2 py-1 rounded focus:outline-none cursor-pointer">
+              <option value="en" class="bg-gray-900 text-white">EN</option>
+              <option value="ar" class="bg-gray-900 text-white">العربية (AR)</option>
+              <option value="ja" class="bg-gray-900 text-white">日本語 (JA)</option>
+            </select>
+          </div>
+
+          <!-- Command Palette Launcher -->
+          <button onclick="document.dispatchEvent(new KeyboardEvent('keydown', {'key':'k','metaKey':true}))" class="hidden md:flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-cyan-950/40 border border-cyan-500/30 text-cyan-300 text-xs font-mono hover:bg-cyan-900/40 transition-colors">
+            <span>⌘K</span>
+          </button>
+
+          <!-- Resume PDF Button -->
+          <button class="open-resume-btn btn-neon py-1 px-3 text-xs">
+            <span data-i18n="nav_cv">CV PDF</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- ======================================================================
+         HERO SECTION
+         ====================================================================== -->
+    <section id="overview" class="py-12 md:py-20 px-4 sm:px-8">
+      <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+        
+        <!-- Left Column: Holographic Avatar & Status -->
+        <div class="lg:col-span-5 flex flex-col items-center text-center">
+          <div class="hologram-avatar-container mb-6">
+            <img src="assets/images/avatar.jpg" alt="Ali Khalid AI Researcher" class="hologram-avatar-img">
+          </div>
+          
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950/60 border border-emerald-500/40 text-emerald-400 text-xs font-mono mb-2">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+            ACTIVE RESEARCHER • CAIRO, EGYPT
+          </div>
+          <div class="text-xs text-gray-400 font-mono">
+            B.Sc. Mechatronics (E-JUST) | Outlier AI Trainer
+          </div>
+
+          <!-- Quick Social Links -->
+          <div class="flex items-center gap-3 mt-4">
+            <a href="https://github.com/Alouakhalid" target="_blank" rel="noopener noreferrer" class="p-2 rounded-lg bg-gray-900 border border-gray-700 hover:border-cyan-400 text-gray-300 hover:text-cyan-400 transition-colors" title="GitHub Profile">
+              <i data-lucide="github" class="w-4 h-4"></i>
+            </a>
+            <a href="https://huggingface.co/Ali0044" target="_blank" rel="noopener noreferrer" class="p-2 rounded-lg bg-gray-900 border border-gray-700 hover:border-cyan-400 text-gray-300 hover:text-cyan-400 transition-colors" title="Hugging Face Models">
+              <i data-lucide="box" class="w-4 h-4"></i>
+            </a>
+            <a href="https://www.linkedin.com/in/ali-khalid-ali-khalid-85468225b/" target="_blank" rel="noopener noreferrer" class="p-2 rounded-lg bg-gray-900 border border-gray-700 hover:border-cyan-400 text-gray-300 hover:text-cyan-400 transition-colors" title="LinkedIn Profile">
+              <i data-lucide="linkedin" class="w-4 h-4"></i>
+            </a>
+            <a href="mailto:ali88883737@gmail.com" class="p-2 rounded-lg bg-gray-900 border border-gray-700 hover:border-cyan-400 text-gray-300 hover:text-cyan-400 transition-colors" title="Send Email">
+              <i data-lucide="mail" class="w-4 h-4"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Right Column: Bio & Core Pitch -->
+        <div class="lg:col-span-7 space-y-6 text-left">
+          
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-cyan-950/40 border border-cyan-500/30 text-cyan-400 text-xs font-mono">
+            <i data-lucide="cpu" class="w-3.5 h-3.5"></i>
+            <span data-i18n="hero_badge">AI ENGINEER • DEEP LEARNING RESEARCHER</span>
+          </div>
+
+          <div>
+            <div class="text-xs sm:text-sm font-mono text-gray-400 mb-1" data-i18n="hero_title_prefix">HELLO, I AM</div>
+            <h1 id="hero-name" class="text-4xl sm:text-6xl font-extrabold tracking-tight text-white font-mono">
+              ALI <span class="text-cyan-400 text-glow-cyan">KHALID</span>
+            </h1>
+            <p id="hero-title" class="text-lg sm:text-xl font-semibold text-purple-400 mt-2">
+              Deep Learning Researcher | Multilingual NLP & Computer Vision Specialist
+            </p>
+          </div>
+
+          <p id="hero-bio" class="text-sm sm:text-base text-gray-300 leading-relaxed max-w-2xl">
+            AI Engineer with 4+ years of experience engineering production-grade intelligent systems. Proven expertise in multilingual NLP, OCR transformer architectures, computer vision, reinforcement learning, and modular robotic arm control at E-JUST.
+          </p>
+
+          <!-- Core Call to Actions -->
+          <div class="flex flex-wrap items-center gap-3 pt-2">
+            <a href="#models-section" class="btn-neon text-xs sm:text-sm">
+              <i data-lucide="layers" class="w-4 h-4"></i>
+              <span data-i18n="hero_explore_models">EXPLORE HF MODELS</span>
+            </a>
+            <a href="#games-section" class="btn-neon-violet text-xs sm:text-sm">
+              <i data-lucide="gamepad-2" class="w-4 h-4"></i>
+              <span data-i18n="hero_play_games">PLAY ARCADE GAMES</span>
+            </a>
+            <a href="#demos-section" class="btn-neon-outline text-xs sm:text-sm">
+              <i data-lucide="terminal" class="w-4 h-4"></i>
+              <span data-i18n="hero_try_demos">TRY AI PLAYGROUND</span>
+            </a>
+            <button class="open-resume-btn btn-neon-outline text-xs sm:text-sm">
+              <i data-lucide="file-text" class="w-4 h-4"></i>
+              <span data-i18n="hero_view_cv">DOWNLOAD CV</span>
+            </button>
+          </div>
+
+          <!-- Quick Terminal Hint -->
+          <div class="p-3 rounded-lg bg-gray-900/60 border border-gray-800 text-xs font-mono text-gray-400 flex items-center justify-between">
+            <span class="flex items-center gap-2">
+              <span class="text-cyan-400">root@ali-khalid:~#</span>
+              <span data-i18n="cmd_palette_hint">Press Cmd+K or Ctrl+K for Neural HUD Command Terminal</span>
+            </span>
+            <span class="px-2 py-0.5 rounded bg-gray-800 text-[10px] text-gray-300 border border-gray-700">HUD v2.4</span>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         KEY METRICS HUD STRIP
+         ====================================================================== -->
+    <section class="py-6 px-4 sm:px-8 border-y border-gray-800/80 bg-gray-950/40">
+      <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4">
+        
+        <div class="cyber-card p-4 text-center">
+          <div class="text-3xl font-extrabold font-mono text-cyan-400 text-glow-cyan">4+</div>
+          <div class="text-xs text-gray-400 mt-1 font-mono" data-i18n="stats_exp">Years Experience</div>
+        </div>
+
+        <div class="cyber-card p-4 text-center">
+          <div class="text-3xl font-extrabold font-mono text-purple-400 text-glow-violet">1,200+</div>
+          <div class="text-xs text-gray-400 mt-1 font-mono" data-i18n="stats_downloads">HF Model Downloads</div>
+        </div>
+
+        <div class="cyber-card p-4 text-center">
+          <div class="text-3xl font-extrabold font-mono text-emerald-400">61st</div>
+          <div class="text-xs text-gray-400 mt-1 font-mono" data-i18n="stats_ecpc">ECPC Finalist (Top 10%)</div>
+        </div>
+
+        <div class="cyber-card p-4 text-center">
+          <div class="text-3xl font-extrabold font-mono text-amber-400">+15%</div>
+          <div class="text-xs text-gray-400 mt-1 font-mono" data-i18n="stats_precision">Robotic Precision Gain</div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         INTERACTIVE AI PLAYGROUND (LIVE DEMOS)
+         ====================================================================== -->
+    <section id="demos-section" class="py-16 px-4 sm:px-8">
+      <div class="max-w-7xl mx-auto">
+        
+        <div class="text-center max-w-3xl mx-auto mb-10">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-cyan-950/40 border border-cyan-500/30 text-cyan-400 text-xs font-mono mb-2">
+            <i data-lucide="zap" class="w-3.5 h-3.5"></i>
+            LIVE INFERENCE LAB
+          </div>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-white" data-i18n="section_demos_title">
+            INTERACTIVE AI PLAYGROUND
+          </h2>
+          <p class="text-sm text-gray-400 mt-2" data-i18n="section_demos_subtitle">
+            Test real-time neural inferences, OCR character recognition, and robotic inverse kinematics
+          </p>
+        </div>
+
+        <!-- Demo Tabs Navigation -->
+        <div class="flex flex-wrap items-center justify-center gap-2 mb-8">
+          <button class="tab-pill demo-tab active" data-target="demo-ocr">
+            <i data-lucide="pencil" class="inline w-3.5 h-3.5 mr-1"></i>
+            <span data-i18n="tab_ocr">Qalam-Net OCR</span>
+          </button>
+          <button class="tab-pill demo-tab" data-target="demo-medical">
+            <i data-lucide="stethoscope" class="inline w-3.5 h-3.5 mr-1"></i>
+            <span data-i18n="tab_medical">Qwen Medical AI</span>
+          </button>
+          <button class="tab-pill demo-tab" data-target="demo-translation">
+            <i data-lucide="languages" class="inline w-3.5 h-3.5 mr-1"></i>
+            <span data-i18n="tab_translation">LinguaFlow NMT</span>
+          </button>
+          <button class="tab-pill demo-tab" data-target="demo-roboarm">
+            <i data-lucide="bot" class="inline w-3.5 h-3.5 mr-1"></i>
+            <span data-i18n="tab_roboarm">Robotic Arm IK</span>
+          </button>
+        </div>
+
+        <!-- 1. OCR Demo Container -->
+        <div id="demo-ocr" class="demo-content">
+          <div class="cyber-card p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+            
+            <div class="lg:col-span-6 space-y-4">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-mono text-cyan-400">DRAW ARABIC CHARACTERS (TOUCH / MOUSE)</span>
+                <button id="ocr-clear-btn" class="px-2.5 py-1 text-xs font-mono bg-red-950/40 border border-red-500/30 text-red-400 hover:bg-red-900/40 rounded transition-colors">
+                  CLEAR PAD
+                </button>
+              </div>
+
+              <!-- Interactive Drawing Canvas -->
+              <div class="relative rounded-lg overflow-hidden border border-cyan-500/30 shadow-[0_0_15px_rgba(0,242,254,0.1)]">
+                <canvas id="ocr-canvas" class="interactive-canvas h-52"></canvas>
+              </div>
+
+              <!-- Quick Presets -->
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="text-xs font-mono text-gray-400">QUICK PRESETS:</span>
+                <button class="ocr-preset-btn px-2.5 py-1 text-xs font-bold font-arabic bg-gray-900 border border-cyan-500/40 text-cyan-300 hover:bg-cyan-950 rounded transition-colors" data-word="علي">علي (Ali)</button>
+                <button class="ocr-preset-btn px-2.5 py-1 text-xs font-bold font-arabic bg-gray-900 border border-cyan-500/40 text-cyan-300 hover:bg-cyan-950 rounded transition-colors" data-word="ذكاء">ذكاء (Intelligence)</button>
+                <button class="ocr-preset-btn px-2.5 py-1 text-xs font-bold font-arabic bg-gray-900 border border-cyan-500/40 text-cyan-300 hover:bg-cyan-950 rounded transition-colors" data-word="قلم">قلم (Qalam)</button>
+                <button class="ocr-preset-btn px-2.5 py-1 text-xs font-bold font-arabic bg-gray-900 border border-cyan-500/40 text-cyan-300 hover:bg-cyan-950 rounded transition-colors" data-word="روبوت">روبوت (Robot)</button>
+              </div>
+
+              <button id="ocr-infer-btn" class="btn-neon w-full py-2.5">
+                <i data-lucide="scan" class="w-4 h-4"></i>
+                RUN QALAM-NET INFERENCE
+              </button>
+            </div>
+
+            <!-- OCR Result HUD -->
+            <div class="lg:col-span-6 flex flex-col justify-between h-full bg-gray-950/70 border border-gray-800 rounded-xl p-5">
+              <div class="terminal-bar mb-3">
+                <div class="terminal-dots">
+                  <span class="terminal-dot bg-red-500"></span>
+                  <span class="terminal-dot bg-yellow-500"></span>
+                  <span class="terminal-dot bg-emerald-500"></span>
+                </div>
+                <span class="text-[11px] font-mono text-gray-400">QALAM_NET_V2 :: ATTENTION TELEMETRY</span>
+              </div>
+
+              <div id="ocr-result" class="min-h-[170px] flex items-center justify-center">
+                <div class="text-xs text-gray-500 font-mono text-center">
+                  [ DRAW ARABIC TEXT ON THE LEFT OR PICK A SAMPLE TO INFER ]
+                </div>
+              </div>
+
+              <div class="mt-4 pt-3 border-t border-gray-800/80 text-[11px] font-mono text-gray-400 flex items-center justify-between">
+                <span>BACKBONE: Vision Transformer (ViT)</span>
+                <span class="text-cyan-400">HuggingFace Model: Ali0044/Qalam-Net</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- 2. Medical Chatbot Demo Container -->
+        <div id="demo-medical" class="demo-content hidden">
+          <div class="cyber-card p-6 max-w-4xl mx-auto">
+            
+            <div class="terminal-bar mb-4">
+              <div class="terminal-dots">
+                <span class="terminal-dot bg-red-500"></span>
+                <span class="terminal-dot bg-yellow-500"></span>
+                <span class="terminal-dot bg-emerald-500"></span>
+              </div>
+              <span class="text-[11px] font-mono text-emerald-400">QWEN-MEDICAL CLINICAL REASONING ENGINE (LoRA)</span>
+            </div>
+
+            <!-- Chat dialogue container -->
+            <div id="medical-chat-messages" class="h-64 overflow-y-auto pr-2 mb-4 space-y-2 border border-gray-800/80 rounded-lg p-3 bg-gray-950/60">
+              <div class="flex justify-start mb-3">
+                <div class="max-w-[85%] bg-gray-900 border border-emerald-500/30 text-gray-200 rounded-2xl rounded-tl-none px-4 py-3 text-xs leading-relaxed">
+                  <strong class="text-emerald-400 font-mono">Qwen-Medical Clinical AI:</strong><br>
+                  Greetings. I am the domain-fine-tuned clinical diagnostic assistant trained by Ali Khalid on medical literature and clinical question-answering. Enter symptoms or select a clinical prompt below.
+                </div>
+              </div>
+            </div>
+
+            <!-- Prompt Chips -->
+            <div class="flex flex-wrap gap-1.5 mb-3">
+              <button class="medical-chip text-[11px] font-mono bg-gray-900 border border-gray-700/60 hover:border-emerald-400 text-gray-300 px-2.5 py-1 rounded transition-colors" data-query="Differential diagnosis for acute retrosternal chest pain with exertional dyspnea">
+                Cardiology: Acute Chest Pain
+              </button>
+              <button class="medical-chip text-[11px] font-mono bg-gray-900 border border-gray-700/60 hover:border-emerald-400 text-gray-300 px-2.5 py-1 rounded transition-colors" data-query="Sudden onset thunderclap headache with photophobia">
+                Neurology: Thunderclap Headache
+              </button>
+              <button class="medical-chip text-[11px] font-mono bg-gray-900 border border-gray-700/60 hover:border-emerald-400 text-gray-300 px-2.5 py-1 rounded transition-colors" data-query="Fasting blood glucose 138 mg/dL and HbA1c 6.8%">
+                Endocrinology: Elevated Fasting Glucose
+              </button>
+              <button class="medical-chip text-[11px] font-mono bg-gray-900 border border-gray-700/60 hover:border-emerald-400 text-gray-300 px-2.5 py-1 rounded transition-colors" data-query="How does self-attention improve automated medical image segmentation?">
+                Research: Transformer Image Attention
+              </button>
+            </div>
+
+            <!-- Chat input bar -->
+            <div class="flex gap-2">
+              <input id="medical-chat-input" type="text" placeholder="Type a clinical symptom or medical question..." class="flex-1 bg-gray-900/90 border border-gray-700 rounded-lg px-4 py-2 text-xs text-white focus:outline-none focus:border-emerald-400 font-mono">
+              <button id="medical-chat-send" class="btn-neon text-xs px-4">
+                TRANSMIT
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. LinguaFlow Translation Demo Container -->
+        <div id="demo-translation" class="demo-content hidden">
+          <div class="cyber-card p-6 max-w-4xl mx-auto space-y-5">
+            
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <span class="text-xs font-mono text-cyan-400">LINGUAFLOW MULTILINGUAL TRANSLATION (EN / AR / JA)</span>
+              
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-mono text-gray-400">PAIR:</span>
+                <select id="nmt-lang-pair" class="bg-gray-900 border border-gray-700 rounded px-2 py-1 text-xs font-mono text-cyan-300">
+                  <option value="en-ar">English → Arabic (الإنجليزية إلى العربية)</option>
+                  <option value="ar-en">Arabic → English (العربية إلى الإنجليزية)</option>
+                  <option value="en-ja">English → Japanese (英語 → 日本語)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="space-y-2">
+                <label class="text-xs font-mono text-gray-400">SOURCE SEQUENCE:</label>
+                <textarea id="nmt-input" rows="3" class="w-full bg-gray-950/80 border border-gray-700 rounded-lg p-3 text-xs text-white focus:outline-none focus:border-cyan-400 font-mono leading-relaxed" placeholder="Enter source text...">Deep learning empowers intelligent autonomous systems.</textarea>
+              </div>
+              <div class="space-y-2">
+                <label class="text-xs font-mono text-gray-400">TARGET SEQUENCE (MODEL INFERENCE):</label>
+                <div id="nmt-output" class="w-full h-[76px] bg-gray-900/80 border border-cyan-500/30 rounded-lg p-3 text-xs text-cyan-200 overflow-y-auto font-mono flex items-center">
+                  التعلم العميق يعزز الأنظمة الذاتية والذكية.
+                </div>
+              </div>
+            </div>
+
+            <div class="flex justify-between items-center">
+              <span class="text-[11px] font-mono text-gray-400">HuggingFace Model: Ali0044/LinguaFlow (318+ downloads)</span>
+              <button id="nmt-translate-btn" class="btn-neon text-xs">
+                RUN NMT INFERENCE
+              </button>
+            </div>
+
+            <!-- Attention Heatmap Visualizer -->
+            <div class="p-3 bg-gray-950/70 border border-gray-800 rounded-lg">
+              <div class="text-[11px] font-mono text-cyan-400 font-semibold mb-1">
+                TRANSFORMER CROSS-ATTENTION MATRIX (Q × Kᵀ / √d):
+              </div>
+              <div id="nmt-attention-matrix"></div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- 4. Robotic Arm IK Demo Container -->
+        <div id="demo-roboarm" class="demo-content hidden">
+          <div class="cyber-card p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+            
+            <div class="lg:col-span-7 space-y-3">
+              <div class="flex justify-between items-center">
+                <span class="text-xs font-mono text-cyan-400">DRAG RETICLE (ORANGE TARGET) ACROSS WORKSPACE</span>
+                <span class="text-xs font-mono text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-500/30">IK SOLVER: ACTIVE</span>
+              </div>
+              <div class="relative border border-cyan-500/30 rounded-lg overflow-hidden">
+                <canvas id="roboarm-canvas" class="interactive-canvas h-72"></canvas>
+              </div>
+              <div class="text-[11px] font-mono text-gray-400 text-center">
+                Thesis Research at E-JUST: Modular control system for robotic arms, improving precision by 15% vs traditional PID.
+              </div>
+            </div>
+
+            <div class="lg:col-span-5 bg-gray-950/80 border border-gray-800 rounded-xl p-5 space-y-4">
+              <div class="terminal-bar mb-2">
+                <div class="terminal-dots">
+                  <span class="terminal-dot bg-red-500"></span>
+                  <span class="terminal-dot bg-yellow-500"></span>
+                  <span class="terminal-dot bg-emerald-500"></span>
+                </div>
+                <span class="text-[11px] font-mono text-cyan-400">ROBOTIC ARM KINEMATICS HUD</span>
+              </div>
+
+              <div class="space-y-3 font-mono text-xs">
+                <div class="p-2.5 rounded bg-gray-900 border border-gray-800 flex justify-between items-center">
+                  <span class="text-gray-400">Joint 1 Angle (θ₁):</span>
+                  <span id="arm-angle-1" class="text-cyan-400 font-bold">-45.0°</span>
+                </div>
+                <div class="p-2.5 rounded bg-gray-900 border border-gray-800 flex justify-between items-center">
+                  <span class="text-gray-400">Joint 2 Angle (θ₂):</span>
+                  <span id="arm-angle-2" class="text-purple-400 font-bold">60.0°</span>
+                </div>
+                <div class="p-2.5 rounded bg-gray-900 border border-gray-800 flex justify-between items-center">
+                  <span class="text-gray-400">Wrist Orientation (θ₃):</span>
+                  <span id="arm-angle-3" class="text-emerald-400 font-bold">-30.0°</span>
+                </div>
+                <div class="p-2.5 rounded bg-gray-900 border border-gray-800 flex justify-between items-center">
+                  <span class="text-gray-400">End-Effector Error:</span>
+                  <span id="arm-error" class="text-amber-400 font-bold">&lt; 0.04 mm (+15% Precision)</span>
+                </div>
+              </div>
+
+              <div class="p-3 rounded bg-cyan-950/30 border border-cyan-500/20 text-[11px] text-gray-300 leading-relaxed font-mono">
+                <span class="text-cyan-400 font-bold">ALGORITHM:</span> Analytical 2-Link Trigonometric Inverse Kinematics with dynamic orientation compensation and smooth C² trajectory continuity.
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         NEURAL ARCADE (ENGINEERING GAMES)
+         ====================================================================== -->
+    <section id="games-section" class="py-16 px-4 sm:px-8 border-t border-gray-800/80 bg-gray-950/30">
+      <div class="max-w-7xl mx-auto">
+        
+        <div class="text-center max-w-3xl mx-auto mb-10">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-purple-950/40 border border-purple-500/30 text-purple-400 text-xs font-mono mb-2">
+            <i data-lucide="gamepad" class="w-3.5 h-3.5"></i>
+            PLAYABLE ENGINEERING LAB
+          </div>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-white" data-i18n="section_games_title">
+            NEURAL ARCADE (ENGINEERING GAMES)
+          </h2>
+          <p class="text-sm text-gray-400 mt-2" data-i18n="section_games_subtitle">
+            Play interactive engineering games built with reinforcement learning, computer vision, and trajectory mathematics
+          </p>
+        </div>
+
+        <!-- Game Navigation Tabs -->
+        <div class="flex flex-wrap items-center justify-center gap-2 mb-8">
+          <button class="tab-pill game-tab active" data-target="game-rl-pong">
+            <i data-lucide="activity" class="inline w-3.5 h-3.5 mr-1"></i>
+            <span data-i18n="tab_game_pong">RL Pong Arena</span>
+          </button>
+          <button class="tab-pill game-tab" data-target="game-vision-hunter">
+            <i data-lucide="crosshair" class="inline w-3.5 h-3.5 mr-1"></i>
+            <span data-i18n="tab_game_vision">Vision Hunter</span>
+          </button>
+          <button class="tab-pill game-tab" data-target="game-robo-spline">
+            <i data-lucide="navigation" class="inline w-3.5 h-3.5 mr-1"></i>
+            <span data-i18n="tab_game_spline">Robo-Spline</span>
+          </button>
+        </div>
+
+        <!-- GAME 1: RL PONG -->
+        <div id="game-rl-pong" class="game-content">
+          <div class="cyber-card p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+            
+            <div class="lg:col-span-8 space-y-3">
+              <div class="flex justify-between items-center">
+                <span class="text-xs font-mono text-cyan-400">PLAYER (LEFT CYAN) VS AI REINFORCEMENT AGENT (RIGHT VIOLET)</span>
+                <span id="rl-score" class="text-sm font-mono font-bold text-white bg-gray-900 px-3 py-1 rounded border border-gray-700">0 : 0</span>
+              </div>
+              <div class="relative border border-cyan-500/30 rounded-lg overflow-hidden shadow-[0_0_20px_rgba(0,242,254,0.1)]">
+                <canvas id="rl-pong-canvas" class="interactive-canvas h-80"></canvas>
+              </div>
+              <div class="flex flex-wrap items-center justify-between gap-3 pt-1">
+                <div class="flex gap-2">
+                  <button id="rl-pong-start" class="btn-neon text-xs py-1.5 px-4">START AGENT MATCH</button>
+                  <button id="rl-pong-reset" class="btn-neon-outline text-xs py-1.5 px-3">RESET</button>
+                </div>
+                <div class="text-xs font-mono text-gray-400">
+                  CONTROLS: MOUSE DRAG / TOUCH OR W & S KEYS
+                </div>
+              </div>
+            </div>
+
+            <!-- RL Q-Learning Telemetry -->
+            <div class="lg:col-span-4 bg-gray-950/80 border border-gray-800 rounded-xl p-5 space-y-4">
+              <div class="terminal-bar mb-2">
+                <div class="terminal-dots">
+                  <span class="terminal-dot bg-red-500"></span>
+                  <span class="terminal-dot bg-yellow-500"></span>
+                  <span class="terminal-dot bg-emerald-500"></span>
+                </div>
+                <span class="text-[11px] font-mono text-purple-400">RL AGENT TELEMETRY</span>
+              </div>
+
+              <div class="space-y-3 font-mono text-xs">
+                <div class="text-gray-400 text-[11px]">Q-VALUE ACTION DISTRIBUTION:</div>
+                <div class="p-2 rounded bg-gray-900 border border-gray-800 flex justify-between">
+                  <span class="text-cyan-400">Q(s, Move Up):</span>
+                  <span id="rl-q-up" class="font-bold text-white">0.32</span>
+                </div>
+                <div class="p-2 rounded bg-gray-900 border border-gray-800 flex justify-between">
+                  <span class="text-gray-400">Q(s, Idle):</span>
+                  <span id="rl-q-idle" class="font-bold text-white">0.15</span>
+                </div>
+                <div class="p-2 rounded bg-gray-900 border border-gray-800 flex justify-between">
+                  <span class="text-purple-400">Q(s, Move Down):</span>
+                  <span id="rl-q-down" class="font-bold text-white">0.53</span>
+                </div>
+                <div class="p-2 rounded bg-gray-900 border border-gray-800 flex justify-between">
+                  <span class="text-emerald-400">Current Volley Rally:</span>
+                  <span id="rl-rally" class="font-bold text-emerald-400">0</span>
+                </div>
+              </div>
+
+              <div class="p-3 rounded bg-purple-950/30 border border-purple-500/20 text-[11px] text-gray-300 leading-relaxed font-mono">
+                <span class="text-purple-400 font-bold">ALGORITHM:</span> Deep Q-Network policy with epsilon-greedy exploration (ε = 0.08) reacting in real time to the ball's phase space trajectory.
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- GAME 2: VISION HUNTER -->
+        <div id="game-vision-hunter" class="game-content hidden">
+          <div class="cyber-card p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+            
+            <div class="lg:col-span-8 space-y-3">
+              <div class="flex justify-between items-center">
+                <span class="text-xs font-mono text-emerald-400">NEURALLENS DETECTOR :: CLICK DETECTED OBJECTS</span>
+                <div class="flex gap-4 text-xs font-mono">
+                  <span>SCORE: <strong id="vision-score" class="text-emerald-400">0</strong></span>
+                  <span>mAP: <strong id="vision-map" class="text-cyan-400">100%</strong></span>
+                  <span>TIME: <strong id="vision-timer" class="text-amber-400">30s</strong></span>
+                </div>
+              </div>
+              <div class="relative border border-emerald-500/30 rounded-lg overflow-hidden shadow-[0_0_20px_rgba(16,185,129,0.1)]">
+                <canvas id="vision-hunter-canvas" class="interactive-canvas h-80"></canvas>
+              </div>
+              <div class="flex items-center justify-between pt-1">
+                <button id="vision-start-btn" class="btn-neon text-xs py-1.5 px-4">START SCAN SESSION</button>
+                <div class="text-xs font-mono text-gray-400">
+                  REFLEX TIME ATTACK (30 SECONDS)
+                </div>
+              </div>
+            </div>
+
+            <div class="lg:col-span-4 bg-gray-950/80 border border-gray-800 rounded-xl p-5 space-y-4">
+              <div class="terminal-bar mb-2">
+                <div class="terminal-dots">
+                  <span class="terminal-dot bg-red-500"></span>
+                  <span class="terminal-dot bg-yellow-500"></span>
+                  <span class="terminal-dot bg-emerald-500"></span>
+                </div>
+                <span class="text-[11px] font-mono text-emerald-400">COMPUTER VISION LAB</span>
+              </div>
+
+              <div class="space-y-2 text-xs font-mono text-gray-300">
+                <div class="text-[11px] text-gray-400">DETECTABLE FEATURE CLASSES:</div>
+                <div class="flex items-center gap-2"><span class="w-3 h-3 bg-cyan-400 rounded-sm"></span> <span>person (IoU &gt; 0.75)</span></div>
+                <div class="flex items-center gap-2"><span class="w-3 h-3 bg-amber-400 rounded-sm"></span> <span>satellite (orbital sensor)</span></div>
+                <div class="flex items-center gap-2"><span class="w-3 h-3 bg-emerald-400 rounded-sm"></span> <span>drone (edge UAV)</span></div>
+                <div class="flex items-center gap-2"><span class="w-3 h-3 bg-pink-500 rounded-sm"></span> <span>neural_anomaly</span></div>
+                <div class="flex items-center gap-2"><span class="w-3 h-3 bg-purple-500 rounded-sm"></span> <span>robot_arm (3-DOF)</span></div>
+              </div>
+
+              <div class="p-3 rounded bg-emerald-950/30 border border-emerald-500/20 text-[11px] text-gray-300 leading-relaxed font-mono">
+                <span class="text-emerald-400 font-bold">CV ENGINE:</span> Simulates YOLOv8 / Vision Transformer (ViT) anchor-free bounding box extraction with real-time confidence scores.
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- GAME 3: ROBO-SPLINE NAVIGATOR -->
+        <div id="game-robo-spline" class="game-content hidden">
+          <div class="cyber-card p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+            
+            <div class="lg:col-span-8 space-y-3">
+              <div class="flex justify-between items-center">
+                <span class="text-xs font-mono text-cyan-400">DRAG WP1 & WP2 TO SHAPE CUBIC SPLINE AROUND OBSTACLES</span>
+                <span id="spline-status" class="text-xs font-mono text-gray-400">DRAG WAYPOINTS (WP1, WP2) TO CLEAR OBSTACLES</span>
+              </div>
+              <div class="relative border border-cyan-500/30 rounded-lg overflow-hidden shadow-[0_0_20px_rgba(0,242,254,0.1)]">
+                <canvas id="robo-spline-canvas" class="interactive-canvas h-80"></canvas>
+              </div>
+              <div class="flex items-center justify-between pt-1">
+                <div class="flex gap-2">
+                  <button id="spline-launch-btn" class="btn-neon text-xs py-1.5 px-4">SIMULATE TRAJECTORY</button>
+                  <button id="spline-reset-btn" class="btn-neon-outline text-xs py-1.5 px-3">RESET WAYPOINTS</button>
+                </div>
+                <div class="text-xs font-mono text-gray-400">
+                  BASED ON ALI'S CUBIC SPLINE GITHUB REPOSITORY
+                </div>
+              </div>
+            </div>
+
+            <div class="lg:col-span-4 bg-gray-950/80 border border-gray-800 rounded-xl p-5 space-y-4">
+              <div class="terminal-bar mb-2">
+                <div class="terminal-dots">
+                  <span class="terminal-dot bg-red-500"></span>
+                  <span class="terminal-dot bg-yellow-500"></span>
+                  <span class="terminal-dot bg-emerald-500"></span>
+                </div>
+                <span class="text-[11px] font-mono text-cyan-400">TRAJECTORY MATHEMATICS</span>
+              </div>
+
+              <div class="space-y-2 text-xs font-mono text-gray-300">
+                <div class="p-2 rounded bg-gray-900 border border-gray-800">
+                  <span class="text-cyan-400 font-bold">C² CONTINUITY:</span> Zero velocity and acceleration discontinuities across boundaries.
+                </div>
+                <div class="p-2 rounded bg-gray-900 border border-gray-800">
+                  <span class="text-purple-400 font-bold">MINIMAL JERK:</span> Minimizes derivative of acceleration to preserve robotic actuators.
+                </div>
+              </div>
+
+              <div class="p-3 rounded bg-cyan-950/30 border border-cyan-500/20 text-[11px] text-gray-300 leading-relaxed font-mono">
+                <span class="text-cyan-400 font-bold">SOURCE CODE:</span> Available on Ali's GitHub repository: <a href="https://github.com/Alouakhalid/cubic-spline-path-of-robot-" target="_blank" class="underline text-cyan-300">cubic-spline-path-of-robot-</a>.
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         HUGGING FACE MODEL HUB
+         ====================================================================== -->
+    <section id="models-section" class="py-16 px-4 sm:px-8">
+      <div class="max-w-7xl mx-auto">
+        
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+          <div>
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-cyan-950/40 border border-cyan-500/30 text-cyan-400 text-xs font-mono mb-2">
+              <i data-lucide="layers" class="w-3.5 h-3.5"></i>
+              OPEN-SOURCE DEEP LEARNING REPOSITORY
+            </div>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-white" data-i18n="section_models_title">
+              HUGGING FACE MODEL HUB
+            </h2>
+            <p class="text-sm text-gray-400 mt-1" data-i18n="section_models_subtitle">
+              Production NLP, OCR Transformer Architectures & Specialized LLMs
+            </p>
+          </div>
+          
+          <a href="https://huggingface.co/Ali0044" target="_blank" rel="noopener noreferrer" class="btn-neon text-xs self-start md:self-auto">
+            VISIT HUGGING FACE PROFILE (Ali0044) →
+          </a>
+        </div>
+
+        <!-- Dynamic Model Cards Grid -->
+        <div id="hf-models-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         GITHUB PROJECTS & RESEARCH
+         ====================================================================== -->
+    <section id="projects-section" class="py-16 px-4 sm:px-8 border-t border-gray-800/80 bg-gray-950/30">
+      <div class="max-w-7xl mx-auto">
+        
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+          <div>
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-purple-950/40 border border-purple-500/30 text-purple-400 text-xs font-mono mb-2">
+              <i data-lucide="code" class="w-3.5 h-3.5"></i>
+              ALGORITHMS & REPOSITORIES
+            </div>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-white" data-i18n="section_projects_title">
+              GITHUB REPOSITORIES & PAPERS
+            </h2>
+            <p class="text-sm text-gray-400 mt-1" data-i18n="section_projects_subtitle">
+              Open-source deep learning pipelines, agent orchestration, and mechatronic control
+            </p>
+          </div>
+
+          <a href="https://github.com/Alouakhalid" target="_blank" rel="noopener noreferrer" class="btn-neon-violet text-xs self-start md:self-auto">
+            VISIT GITHUB (@Alouakhalid) →
+          </a>
+        </div>
+
+        <!-- Filter Buttons -->
+        <div class="flex flex-wrap items-center gap-2 mb-8">
+          <button class="tab-pill project-filter-btn active" data-category="all">ALL PROJECTS</button>
+          <button class="tab-pill project-filter-btn" data-category="robotics">ROBOTICS & MECHATRONICS</button>
+          <button class="tab-pill project-filter-btn" data-category="cv">COMPUTER VISION</button>
+          <button class="tab-pill project-filter-btn" data-category="nlp">NLP & AGENTS</button>
+          <button class="tab-pill project-filter-btn" data-category="rl">REINFORCEMENT LEARNING</button>
+          <button class="tab-pill project-filter-btn" data-category="algorithms">ECPC ALGORITHMS</button>
+        </div>
+
+        <!-- Dynamic Projects Grid -->
+        <div id="github-projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         EXPERIENCE & EDUCATION TIMELINE
+         ====================================================================== -->
+    <section id="experience-section" class="py-16 px-4 sm:px-8">
+      <div class="max-w-7xl mx-auto">
+        
+        <div class="text-center max-w-3xl mx-auto mb-12">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-cyan-950/40 border border-cyan-500/30 text-cyan-400 text-xs font-mono mb-2">
+            <i data-lucide="briefcase" class="w-3.5 h-3.5"></i>
+            CAREER & RESEARCH PATH
+          </div>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-white" data-i18n="section_experience_title">
+            WORK EXPERIENCE & EDUCATION
+          </h2>
+          <p class="text-sm text-gray-400 mt-2" data-i18n="section_experience_subtitle">
+            Production AI engineering, corporate training, research internships & E-JUST mechatronics
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+          
+          <!-- Left: Work Experience Timeline -->
+          <div class="lg:col-span-7">
+            <h3 class="text-lg font-mono font-bold text-cyan-400 mb-6 flex items-center gap-2">
+              <i data-lucide="terminal" class="w-4 h-4"></i>
+              PRODUCTION & INTERNSHIP EXPERIENCE
+            </h3>
+            <div id="experience-timeline" class="space-y-4"></div>
+          </div>
+
+          <!-- Right: Education & Certifications -->
+          <div class="lg:col-span-5 space-y-8">
+            <div>
+              <h3 class="text-lg font-mono font-bold text-purple-400 mb-6 flex items-center gap-2">
+                <i data-lucide="graduation-cap" class="w-4 h-4"></i>
+                ACADEMIC FORMATION
+              </h3>
+              <div id="education-container"></div>
+            </div>
+
+            <div>
+              <h3 class="text-lg font-mono font-bold text-emerald-400 mb-4 flex items-center gap-2">
+                <i data-lucide="award" class="w-4 h-4"></i>
+                GLOBAL CERTIFICATIONS
+              </h3>
+              <div id="certs-container" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SKILLS MATRIX
+         ====================================================================== -->
+    <section id="skills-section" class="py-16 px-4 sm:px-8 border-t border-gray-800/80 bg-gray-950/40">
+      <div class="max-w-7xl mx-auto">
+        
+        <div class="text-center max-w-3xl mx-auto mb-12">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-cyan-950/40 border border-cyan-500/30 text-cyan-400 text-xs font-mono mb-2">
+            <i data-lucide="cpu" class="w-3.5 h-3.5"></i>
+            COMPETENCY RADAR
+          </div>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-white" data-i18n="section_skills_title">
+            SKILLS & CERTIFICATIONS
+          </h2>
+          <p class="text-sm text-gray-400 mt-2" data-i18n="section_skills_subtitle">
+            Specialized frameworks, verified certifications, and core research competencies
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          
+          <!-- Machine Learning -->
+          <div class="cyber-card p-5">
+            <div class="text-sm font-mono font-bold text-cyan-400 mb-3 flex items-center gap-2">
+              <i data-lucide="brain" class="w-4 h-4"></i>
+              MACHINE LEARNING
+            </div>
+            <div class="flex flex-wrap gap-1.5">
+              <span class="px-2 py-1 rounded text-xs font-mono bg-gray-900 border border-gray-800 text-gray-200">Python</span>
+              <span class="px-2 py-1 rounded text-xs font-mono bg-gray-900 border border-gray-800 text-gray-200">PyTorch</span>
+              <span class="px-2 py-1 rounded text-xs font-mono bg-gray-900 border border-gray-800 text-gray-200">TensorFlow</span>
+              <span class="px-2 py-1 rounded text-xs font-mono bg-gray-900 border border-gray-800 text-gray-200">Scikit-Learn</span>
+              <span class="px-2 py-1 rounded text-xs font-mono bg-gray-900 border border-gray-800 text-gray-200">Deep Learning</span>
+              <span class="px-2 py-1 rounded text-xs font-mono bg-gray-900 border border-gray-800 text-gray-200">Reinforcement Learning</span>
+              <span class="px-2 py-1 rounded text-xs font-mono bg-gray-900 border border-gray-800 text-gray-200">Hugging Face</span>
+            </div>
+          </div>
+
+          <!-- NLP -->
+          <div class="cyber-card p-5">
+            <div class="text-sm font-mono font-bold text-purple-400 mb-3 flex items-center gap-2">
+              <i data-lucide="message-square" class="w-4 h-4"></i>
+              NATURAL LANGUAGE
+            </div>
+            <div class="flex flex-wrap gap-1.5">
+              <span class="px-2 py-1 rounded text-xs font-mono bg-gray-900 border border-gray-800 text-gray-200">Transformers</span>
+              <span class="px-2 py-1 rounded text-xs font-mono bg-gray-900 border border-gray-800 text-gray-200">BERT & GPT</span>
+              <span class="px-2 py-1 rounded text-xs font-mono bg-gray-900 border border-gray-800 text-gray-200">TrOCR</span>
+              <span class="px-2 py-1 rounded text-xs font-mono bg-gray-900 border border-gray-800 text-gray-200">Arabic OCR</span>
+              <span class="px-2 py-1 rounded text-xs font-mono bg-gray-900 border border-gray-800 text-gray-200">Seq2Seq</span>
+              <span class="px-2 py-1 rounded text-xs font-mono bg-gray-900 border border-gray-800 text-gray-200">Sentiment Analysis</span>
+              <span class="px-2 py-1 rounded text-xs font-mono bg-gray-900 border border-gray-800 text-gray-200">LangChain / Agents</span>
+            </div>
+          </div>
+
+          <!-- Computer Vision -->
+          <div class="cyber-card p-5">
+            <div class="text-sm font-mono font-bold text-emerald-400 mb-3 flex items-center gap-2">
+              <i data-lucide="eye" class="w-4 h-4"></i>
+              COMPUTER VISION
+            </div>
+            <div class="flex flex-wrap gap-1.5">
+              <span class="px-2 py-1 rounded text-xs font-mono bg-gray-900 border border-gray-800 text-gray-200">CNNs</span>
+              <span class="px-2 py-1 rounded text-xs font-mono bg-gray-900 border border-gray-800 text-gray-200">Vision Transformers (ViT)</span>
+              <span class="px-2 py-1 rounded text-xs font-mono bg-gray-900 border border-gray-800 text-gray-200">YOLO</span>
+              <span class="px-2 py-1 rounded text-xs font-mono bg-gray-900 border border-gray-800 text-gray-200">Diffusion Models</span>
+              <span class="px-2 py-1 rounded text-xs font-mono bg-gray-900 border border-gray-800 text-gray-200">OpenCV</span>
+              <span class="px-2 py-1 rounded text-xs font-mono bg-gray-900 border border-gray-800 text-gray-200">Real-Time Processing</span>
+              <span class="px-2 py-1 rounded text-xs font-mono bg-gray-900 border border-gray-800 text-gray-200">Object Detection</span>
+            </div>
+          </div>
+
+          <!-- Robotics & Mechatronics -->
+          <div class="cyber-card p-5">
+            <div class="text-sm font-mono font-bold text-amber-400 mb-3 flex items-center gap-2">
+              <i data-lucide="bot" class="w-4 h-4"></i>
+              ROBOTICS & MECHATRONICS
+            </div>
+            <div class="flex flex-wrap gap-1.5">
+              <span class="px-2 py-1 rounded text-xs font-mono bg-gray-900 border border-gray-800 text-gray-200">C++ Programming</span>
+              <span class="px-2 py-1 rounded text-xs font-mono bg-gray-900 border border-gray-800 text-gray-200">Inverse Kinematics</span>
+              <span class="px-2 py-1 rounded text-xs font-mono bg-gray-900 border border-gray-800 text-gray-200">Cubic Spline Trajectory</span>
+              <span class="px-2 py-1 rounded text-xs font-mono bg-gray-900 border border-gray-800 text-gray-200">ROS</span>
+              <span class="px-2 py-1 rounded text-xs font-mono bg-gray-900 border border-gray-800 text-gray-200">Mechatronics Control</span>
+              <span class="px-2 py-1 rounded text-xs font-mono bg-gray-900 border border-gray-800 text-gray-200">AWS Cloud</span>
+              <span class="px-2 py-1 rounded text-xs font-mono bg-gray-900 border border-gray-800 text-gray-200">Git / Linux</span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         CONTACT & INITIATE TRANSMISSION
+         ====================================================================== -->
+    <section id="contact-section" class="py-16 px-4 sm:px-8">
+      <div class="max-w-4xl mx-auto cyber-card p-8 text-center space-y-6">
+        
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-cyan-950/40 border border-cyan-500/30 text-cyan-400 text-xs font-mono">
+          <i data-lucide="radio" class="w-3.5 h-3.5"></i>
+          SECURE CHANNEL
+        </div>
+
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white font-mono" data-i18n="section_contact_title">
+          INITIATE TRANSMISSION
+        </h2>
+
+        <p class="text-sm text-gray-300 max-w-xl mx-auto" data-i18n="section_contact_subtitle">
+          Available for AI Engineering, Deep Learning Research, and Robotics opportunities.
+        </p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-left pt-4">
+          
+          <a href="mailto:ali88883737@gmail.com" class="p-4 rounded-xl bg-gray-900/80 border border-gray-800 hover:border-cyan-400 transition-colors block group">
+            <div class="text-xs font-mono text-cyan-400 mb-1">EMAIL</div>
+            <div class="text-xs font-bold text-white group-hover:text-cyan-300 break-all">ali88883737@gmail.com</div>
+          </a>
+
+          <a href="tel:+201020456053" class="p-4 rounded-xl bg-gray-900/80 border border-gray-800 hover:border-cyan-400 transition-colors block group">
+            <div class="text-xs font-mono text-purple-400 mb-1">PHONE / WHATSAPP</div>
+            <div class="text-xs font-bold text-white group-hover:text-purple-300">+20 102 045 6053</div>
+          </a>
+
+          <div class="p-4 rounded-xl bg-gray-900/80 border border-gray-800 block">
+            <div class="text-xs font-mono text-emerald-400 mb-1">LOCATION</div>
+            <div class="text-xs font-bold text-white">Cairo, Egypt</div>
+          </div>
+
+        </div>
+
+        <div class="pt-4 flex flex-wrap items-center justify-center gap-4">
+          <a href="https://github.com/Alouakhalid" target="_blank" rel="noopener noreferrer" class="btn-neon text-xs">
+            <i data-lucide="github" class="w-4 h-4"></i> GITHUB
+          </a>
+          <a href="https://huggingface.co/Ali0044" target="_blank" rel="noopener noreferrer" class="btn-neon-violet text-xs">
+            <i data-lucide="box" class="w-4 h-4"></i> HUGGING FACE
+          </a>
+          <a href="https://www.linkedin.com/in/ali-khalid-ali-khalid-85468225b/" target="_blank" rel="noopener noreferrer" class="btn-neon-outline text-xs">
+            <i data-lucide="linkedin" class="w-4 h-4"></i> LINKEDIN
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         FOOTER
+         ====================================================================== -->
+    <footer class="py-8 px-4 border-t border-gray-900 text-center text-xs font-mono text-gray-500">
+      <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div>
+          © 2026 ALI KHALID • AI ENGINEER & DEEP LEARNING RESEARCHER
+        </div>
+        <div class="flex items-center gap-4">
+          <a href="https://github.com/Alouakhalid" target="_blank" class="hover:text-cyan-400 transition-colors">GitHub</a>
+          <a href="https://huggingface.co/Ali0044" target="_blank" class="hover:text-cyan-400 transition-colors">Hugging Face</a>
+          <a href="https://www.linkedin.com/in/ali-khalid-ali-khalid-85468225b/" target="_blank" class="hover:text-cyan-400 transition-colors">LinkedIn</a>
+          <button class="open-resume-btn hover:text-cyan-400 transition-colors">Resume PDF</button>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- ========================================================================
+       COMMAND PALETTE MODAL (HUD TERMINAL ⌘K)
+       ======================================================================== -->
+  <div id="cmd-palette-modal">
+    <div class="cyber-card p-6 w-full max-w-xl bg-gray-950/95 border border-cyan-500/40 shadow-[0_0_50px_rgba(0,242,254,0.2)]">
+      
+      <div class="flex items-center justify-between pb-3 border-b border-gray-800">
+        <span class="text-xs font-mono text-cyan-400 flex items-center gap-2">
+          <i data-lucide="terminal" class="w-4 h-4"></i>
+          NEURAL HUD COMMAND TERMINAL
+        </span>
+        <button id="cmd-close" class="text-gray-400 hover:text-white text-xs font-mono">[ESC]</button>
+      </div>
+
+      <div class="mt-4 mb-4">
+        <input id="cmd-input" type="text" placeholder="Type a command or choose below..." class="w-full bg-gray-900 border border-cyan-500/30 rounded-lg p-3 text-xs text-white focus:outline-none focus:border-cyan-400 font-mono">
+      </div>
+
+      <div class="space-y-1.5 text-xs font-mono">
+        <div class="cmd-item p-2.5 rounded-lg bg-gray-900/60 hover:bg-cyan-950/60 hover:border-cyan-500/40 border border-transparent flex items-center justify-between cursor-pointer text-gray-200 transition-all" data-action="goto-models">
+          <span class="flex items-center gap-2"><i data-lucide="layers" class="w-4 h-4 text-cyan-400"></i> Explore Hugging Face Models</span>
+          <span class="text-[10px] text-gray-500">G M</span>
+        </div>
+        <div class="cmd-item p-2.5 rounded-lg bg-gray-900/60 hover:bg-cyan-950/60 hover:border-cyan-500/40 border border-transparent flex items-center justify-between cursor-pointer text-gray-200 transition-all" data-action="goto-demos">
+          <span class="flex items-center gap-2"><i data-lucide="zap" class="w-4 h-4 text-emerald-400"></i> Open AI Playground (OCR / Medical / RoboArm)</span>
+          <span class="text-[10px] text-gray-500">G D</span>
+        </div>
+        <div class="cmd-item p-2.5 rounded-lg bg-gray-900/60 hover:bg-cyan-950/60 hover:border-cyan-500/40 border border-transparent flex items-center justify-between cursor-pointer text-gray-200 transition-all" data-action="goto-games">
+          <span class="flex items-center gap-2"><i data-lucide="gamepad-2" class="w-4 h-4 text-purple-400"></i> Play Neural Arcade Games (RL Pong / Vision Hunter)</span>
+          <span class="text-[10px] text-gray-500">G A</span>
+        </div>
+        <div class="cmd-item p-2.5 rounded-lg bg-gray-900/60 hover:bg-cyan-950/60 hover:border-cyan-500/40 border border-transparent flex items-center justify-between cursor-pointer text-gray-200 transition-all" data-action="goto-projects">
+          <span class="flex items-center gap-2"><i data-lucide="code" class="w-4 h-4 text-amber-400"></i> View GitHub Projects & ECPC Solutions</span>
+          <span class="text-[10px] text-gray-500">G P</span>
+        </div>
+        <div class="cmd-item p-2.5 rounded-lg bg-gray-900/60 hover:bg-cyan-950/60 hover:border-cyan-500/40 border border-transparent flex items-center justify-between cursor-pointer text-gray-200 transition-all" data-action="open-resume">
+          <span class="flex items-center gap-2"><i data-lucide="file-text" class="w-4 h-4 text-blue-400"></i> Preview & Download Resume PDF</span>
+          <span class="text-[10px] text-gray-500">G R</span>
+        </div>
+        <div class="cmd-item p-2.5 rounded-lg bg-gray-900/60 hover:bg-cyan-950/60 hover:border-cyan-500/40 border border-transparent flex items-center justify-between cursor-pointer text-gray-200 transition-all" data-action="copy-email">
+          <span class="flex items-center gap-2"><i data-lucide="mail" class="w-4 h-4 text-pink-400"></i> Copy Contact Email (ali88883737@gmail.com)</span>
+          <span class="text-[10px] text-gray-500">C E</span>
+        </div>
+        <div class="cmd-item p-2.5 rounded-lg bg-gray-900/60 hover:bg-cyan-950/60 hover:border-cyan-500/40 border border-transparent flex items-center justify-between cursor-pointer text-gray-200 transition-all" data-action="toggle-sound">
+          <span class="flex items-center gap-2"><i data-lucide="volume-2" class="w-4 h-4 text-cyan-400"></i> Toggle Web Audio Sound FX</span>
+          <span class="text-[10px] text-gray-500">T S</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       RESUME PDF PREVIEW MODAL
+       ======================================================================== -->
+  <div id="resume-modal">
+    <div class="cyber-card p-6 w-full max-w-4xl max-h-[90vh] flex flex-col bg-gray-950/95 border border-cyan-500/40 shadow-[0_0_50px_rgba(0,242,254,0.25)]">
+      
+      <div class="flex items-center justify-between pb-3 border-b border-gray-800">
+        <div class="flex items-center gap-2 text-xs font-mono text-cyan-400">
+          <i data-lucide="file-text" class="w-4 h-4"></i>
+          <span>ALI KHALID :: OFFICIAL CURRICULUM VITAE</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <a href="assets/cv.pdf" download="Ali_Khalid_CV.pdf" class="btn-neon text-xs py-1 px-3">
+            <i data-lucide="download" class="w-3.5 h-3.5"></i> DOWNLOAD PDF
+          </a>
+          <button id="resume-close" class="text-gray-400 hover:text-white text-xs font-mono">[CLOSE]</button>
+        </div>
+      </div>
+
+      <div class="flex-1 mt-4 rounded-lg overflow-hidden border border-gray-800 min-h-[550px]">
+        <iframe src="assets/cv.pdf" class="w-full h-full min-h-[550px] border-none" title="Ali Khalid CV"></iframe>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/particles.js"></script>
+  <script src="js/demos.js"></script>
+  <script src="js/games.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/main.js"></script>
+
+  <!-- Initialize Lucide Icons -->
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>
