@@ -23,6 +23,8 @@ class ThemeManager {
     document.body.classList.remove('theme-cyan', 'theme-violet', 'theme-emerald', 'theme-amber');
     document.body.classList.add(`theme-${theme}`);
     localStorage.setItem('ali_portfolio_theme', theme);
+    const mobileThemeSelect = document.getElementById('mobile-theme-select');
+    if (mobileThemeSelect) mobileThemeSelect.value = theme;
   }
 }
 window.ThemeManager = ThemeManager;
@@ -257,8 +259,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // 13. Tab Switching Logic for Demos & Games
-  const setupTabs = (tabGroupClass, contentGroupClass) => {
+  // 13. Tab Switching Logic for Demos & Games (with canvas wake-up events)
+  const setupTabs = (tabGroupClass, contentGroupClass, eventName) => {
     const tabs = document.querySelectorAll(tabGroupClass);
     const contents = document.querySelectorAll(contentGroupClass);
 
@@ -272,13 +274,20 @@ document.addEventListener('DOMContentLoaded', () => {
         const targetContent = document.getElementById(targetId);
         if (targetContent) targetContent.classList.remove('hidden');
 
+        // Wake up and resize canvases inside the activated tab
+        if (eventName) {
+          setTimeout(() => {
+            document.dispatchEvent(new CustomEvent(eventName, { detail: { target: targetId } }));
+          }, 40);
+        }
+
         if (window.soundFX) window.soundFX.playClick();
       });
     });
   };
 
-  setupTabs('.demo-tab', '.demo-content');
-  setupTabs('.game-tab', '.game-content');
+  setupTabs('.demo-tab', '.demo-content', 'demo-tab-activated');
+  setupTabs('.game-tab', '.game-content', 'game-tab-activated');
 
   // 14. Sound Toggle System
   const soundBtn = document.getElementById('sound-toggle-btn');
@@ -392,6 +401,53 @@ document.addEventListener('DOMContentLoaded', () => {
   if (resumeModal) {
     resumeModal.addEventListener('click', (e) => {
       if (e.target === resumeModal) closeResumeModal();
+    });
+  }
+
+  // 17. Mobile Navigation Drawer Controller
+  const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+  const mobileMenuClose = document.getElementById('mobile-menu-close');
+  const mobileDrawer = document.getElementById('mobile-menu-drawer');
+  const mobileBackdrop = document.getElementById('mobile-menu-backdrop');
+  const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+  const mobileThemeSelect = document.getElementById('mobile-theme-select');
+  const cmdPaletteBtn = document.getElementById('cmd-palette-btn');
+
+  const openMobileMenu = () => {
+    if (!mobileDrawer || !mobileBackdrop) return;
+    mobileDrawer.classList.add('open');
+    mobileBackdrop.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    if (window.soundFX) window.soundFX.playWhoosh();
+  };
+
+  const closeMobileMenu = () => {
+    if (!mobileDrawer || !mobileBackdrop) return;
+    mobileDrawer.classList.remove('open');
+    mobileBackdrop.classList.remove('open');
+    document.body.style.overflow = '';
+    if (window.soundFX) window.soundFX.playClick();
+  };
+
+  if (mobileMenuBtn) mobileMenuBtn.addEventListener('click', openMobileMenu);
+  if (mobileMenuClose) mobileMenuClose.addEventListener('click', closeMobileMenu);
+  if (mobileBackdrop) mobileBackdrop.addEventListener('click', closeMobileMenu);
+  mobileNavLinks.forEach(link => link.addEventListener('click', closeMobileMenu));
+
+  if (mobileThemeSelect) {
+    const savedTheme = localStorage.getItem('ali_portfolio_theme') || 'cyan';
+    mobileThemeSelect.value = savedTheme;
+    mobileThemeSelect.addEventListener('change', (e) => {
+      ThemeManager.setTheme(e.target.value);
+      const desktopThemeSelect = document.getElementById('theme-select');
+      if (desktopThemeSelect) desktopThemeSelect.value = e.target.value;
+      if (window.soundFX) window.soundFX.playWhoosh();
+    });
+  }
+
+  if (cmdPaletteBtn) {
+    cmdPaletteBtn.addEventListener('click', () => {
+      openCmdPalette();
     });
   }
 

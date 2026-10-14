@@ -57,6 +57,25 @@ class NeuralCanvas {
       this.mouse.y = null;
     });
 
+    window.addEventListener('touchstart', (e) => {
+      if (e.touches[0]) {
+        this.mouse.x = e.touches[0].clientX;
+        this.mouse.y = e.touches[0].clientY;
+      }
+    }, { passive: true });
+
+    window.addEventListener('touchmove', (e) => {
+      if (e.touches[0]) {
+        this.mouse.x = e.touches[0].clientX;
+        this.mouse.y = e.touches[0].clientY;
+      }
+    }, { passive: true });
+
+    window.addEventListener('touchend', () => {
+      this.mouse.x = null;
+      this.mouse.y = null;
+    }, { passive: true });
+
     window.addEventListener('click', (e) => {
       // Create a synaptic pulse burst on click
       for (let i = 0; i < 5; i++) {

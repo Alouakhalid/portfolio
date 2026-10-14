@@ -45,12 +45,25 @@ class CyberTerminal {
       }
     });
 
-    // Welcome banner
+    // Wire up quick command buttons for mobile and touch devices
+    document.querySelectorAll('.terminal-quick-cmd').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const cmd = btn.dataset.cmd;
+        if (cmd) {
+          if (window.soundFX) window.soundFX.playKeypress();
+          this.execute(cmd);
+        }
+      });
+    });
+
+    // Responsive Welcome banner
     this.print(`
-<span class="text-cyan-400 font-bold">╔═══════════════════════════════════════════════════════════════╗</span>
-<span class="text-cyan-400 font-bold">║  ALI KHALID :: AI & ROBOTICS RESEARCH SHELL [v3.0.4-LTS]     ║</span>
-<span class="text-cyan-400 font-bold">╚═══════════════════════════════════════════════════════════════╝</span>
-Type <span class="text-emerald-400 font-bold font-mono">'help'</span> for command list, or <span class="text-purple-400 font-bold font-mono">'models'</span>, <span class="text-amber-400 font-bold font-mono">'thesis'</span>, <span class="text-pink-400 font-bold font-mono">'matrix'</span>.
+<div class="p-2 rounded bg-cyan-950/40 border border-cyan-500/40 text-cyan-300 font-bold mb-1">
+  ⚡ ALI KHALID :: AI & ROBOTICS RESEARCH SHELL [v3.0.4-LTS]
+</div>
+<div class="text-gray-300">
+  Type <span class="text-emerald-400 font-bold font-mono">'help'</span> or tap the quick buttons below.
+</div>
 `);
   }
 

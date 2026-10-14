@@ -86,13 +86,27 @@ class NeuralArcade {
       playerY = Math.max(0, Math.min(canvas.height - paddleHeight, mouseY - paddleHeight / 2));
     });
 
-    canvas.addEventListener('touchmove', (e) => {
+    const handleTouchPaddle = (e) => {
       if (!e.touches[0]) return;
       e.preventDefault();
       const box = canvas.getBoundingClientRect();
       const touchY = (e.touches[0].clientY - box.top) * (canvas.height / box.height);
       playerY = Math.max(0, Math.min(canvas.height - paddleHeight, touchY - paddleHeight / 2));
-    }, { passive: false });
+    };
+
+    canvas.addEventListener('touchstart', handleTouchPaddle, { passive: false });
+    canvas.addEventListener('touchmove', handleTouchPaddle, { passive: false });
+
+    // Dynamic resize listener
+    const handleResize = () => {
+      const box = canvas.getBoundingClientRect();
+      if (box.width > 0 && Math.abs(box.width - canvas.width) > 5) {
+        canvas.width = box.width;
+        draw();
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    document.addEventListener('game-tab-activated', handleResize);
 
     const update = () => {
       if (!isRunning) return;
@@ -359,11 +373,8 @@ class NeuralArcade {
       if (window.soundFX) window.soundFX.playPowerUp();
     };
 
-    canvas.addEventListener('click', (e) => {
+    const handleDetectionHit = (clickX, clickY) => {
       if (!isPlaying) return;
-      const box = canvas.getBoundingClientRect();
-      const clickX = (e.clientX - box.left) * (canvas.width / box.width);
-      const clickY = (e.clientY - box.top) * (canvas.height / box.height);
 
       let hit = false;
       for (let i = targets.length - 1; i >= 0; i--) {
@@ -393,7 +404,37 @@ class NeuralArcade {
         const mAP = totalSpawned > 0 ? ((detections / totalSpawned) * 100).toFixed(1) : 0;
         mAPElem.textContent = `${mAP}%`;
       }
+    };
+
+    let lastTouchTime = 0;
+    canvas.addEventListener('touchstart', (e) => {
+      if (!isPlaying || !e.touches[0]) return;
+      e.preventDefault();
+      lastTouchTime = Date.now();
+      const box = canvas.getBoundingClientRect();
+      const clickX = (e.touches[0].clientX - box.left) * (canvas.width / box.width);
+      const clickY = (e.touches[0].clientY - box.top) * (canvas.height / box.height);
+      handleDetectionHit(clickX, clickY);
+    }, { passive: false });
+
+    canvas.addEventListener('click', (e) => {
+      if (Date.now() - lastTouchTime < 400) return; // Prevent double trigger
+      if (!isPlaying) return;
+      const box = canvas.getBoundingClientRect();
+      const clickX = (e.clientX - box.left) * (canvas.width / box.width);
+      const clickY = (e.clientY - box.top) * (canvas.height / box.height);
+      handleDetectionHit(clickX, clickY);
     });
+
+    const handleResize = () => {
+      const box = canvas.getBoundingClientRect();
+      if (box.width > 0 && Math.abs(box.width - canvas.width) > 5) {
+        canvas.width = box.width;
+        draw();
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    document.addEventListener('game-tab-activated', handleResize);
 
     const update = () => {
       if (!isPlaying) return;
@@ -588,10 +629,12 @@ class NeuralArcade {
       const mouseX = (e.clientX - box.left) * (canvas.width / box.width);
       const mouseY = (e.clientY - box.top) * (canvas.height / box.height);
 
-      if (Math.hypot(mouseX - p1.x, mouseY - p1.y) < 18) {
+      if (Math.hypot(mouseX - p1.x, mouseY - p1.y) < 22) {
         draggingPoint = p1;
-      } else if (Math.hypot(mouseX - p2.x, mouseY - p2.y) < 18) {
+        if (window.soundFX) window.soundFX.playClick();
+      } else if (Math.hypot(mouseX - p2.x, mouseY - p2.y) < 22) {
         draggingPoint = p2;
+        if (window.soundFX) window.soundFX.playClick();
       }
     });
 
@@ -605,6 +648,57 @@ class NeuralArcade {
     window.addEventListener('mouseup', () => {
       draggingPoint = null;
     });
+
+    // Touch controls for mobile / tablet
+    canvas.addEventListener('touchstart', (e) => {
+      if (!e.touches[0]) return;
+      e.preventDefault();
+      const box = canvas.getBoundingClientRect();
+      const touchX = (e.touches[0].clientX - box.left) * (canvas.width / box.width);
+      const touchY = (e.touches[0].clientY - box.top) * (canvas.height / box.height);
+
+      // Generous touch target area (32px) for fingers
+      if (Math.hypot(touchX - p1.x, touchY - p1.y) < 32) {
+        draggingPoint = p1;
+        if (window.soundFX) window.soundFX.playClick();
+      } else if (Math.hypot(touchX - p2.x, touchY - p2.y) < 32) {
+        draggingPoint = p2;
+        if (window.soundFX) window.soundFX.playClick();
+      }
+    }, { passive: false });
+
+    window.addEventListener('touchmove', (e) => {
+      if (!draggingPoint || !e.touches[0]) return;
+      e.preventDefault();
+      const box = canvas.getBoundingClientRect();
+      draggingPoint.x = Math.max(20, Math.min(canvas.width - 20, (e.touches[0].clientX - box.left) * (canvas.width / box.width)));
+      draggingPoint.y = Math.max(20, Math.min(canvas.height - 20, (e.touches[0].clientY - box.top) * (canvas.height / box.height)));
+    }, { passive: false });
+
+    window.addEventListener('touchend', () => {
+      draggingPoint = null;
+    });
+    window.addEventListener('touchcancel', () => {
+      draggingPoint = null;
+    });
+
+    // Dynamic resize handler
+    const handleResize = () => {
+      const box = canvas.getBoundingClientRect();
+      if (box.width > 0 && Math.abs(box.width - canvas.width) > 5) {
+        const oldW = canvas.width || 560;
+        canvas.width = box.width;
+        pEnd.x = canvas.width - 50;
+        const scale = canvas.width / oldW;
+        p1.x = Math.max(30, Math.min(canvas.width - 30, p1.x * scale));
+        p2.x = Math.max(30, Math.min(canvas.width - 30, p2.x * scale));
+        obstacles[0].x = canvas.width * 0.35;
+        obstacles[1].x = canvas.width * 0.65;
+        draw();
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    document.addEventListener('game-tab-activated', handleResize);
 
     const update = () => {
       if (!isNavigating) return;
@@ -795,7 +889,7 @@ class NeuralArcade {
       gridContainer.innerHTML = '';
       for (let i = 0; i < 9; i++) {
         const btn = document.createElement('button');
-        btn.className = 'quantum-cell h-20 rounded-xl bg-gray-900/90 border border-gray-700/60 font-mono text-2xl font-bold transition-all flex items-center justify-center relative overflow-hidden select-none';
+        btn.className = 'quantum-cell h-16 sm:h-20 rounded-xl bg-gray-900/90 border border-gray-700/60 font-mono text-xl sm:text-2xl font-bold transition-all flex items-center justify-center relative overflow-hidden select-none active:scale-95 cursor-pointer';
         btn.dataset.index = i;
         btn.innerHTML = `<span style="color: ${colors[i]}">${symbols[i]}</span>`;
         btn.addEventListener('click', () => handleCellClick(i));

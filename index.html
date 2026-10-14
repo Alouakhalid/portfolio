@@ -2,7 +2,7 @@
 <html lang="en" dir="ltr" class="dark">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Ali Khalid | AI Engineer, Deep Learning Researcher & Robotics</title>
   <meta name="description" content="Portfolio of Ali Khalid — AI Engineer & Deep Learning Researcher specializing in Multilingual NLP, Arabic OCR Transformers, Computer Vision, Reinforcement Learning, and Mechatronics.">
 
@@ -54,11 +54,11 @@
     <!-- ======================================================================
          STICKY HUD NAVIGATION
          ====================================================================== -->
-    <header class="w-full px-4 sm:px-8 py-3 sticky top-3 z-50">
-      <div class="max-w-7xl mx-auto hud-nav px-4 sm:px-6 py-2.5 flex items-center justify-between gap-4">
+    <header class="w-full px-3 sm:px-8 py-3 sticky top-3 z-50">
+      <div class="max-w-7xl mx-auto hud-nav px-3 sm:px-6 py-2 flex items-center justify-between gap-2 sm:gap-4">
         
         <!-- Call-sign / Logo -->
-        <a href="#" class="flex items-center gap-2.5 group">
+        <a href="#" class="flex items-center gap-2 group flex-shrink-0">
           <span class="pulse-indicator"></span>
           <div class="font-mono text-xs sm:text-sm font-bold tracking-wider text-white group-hover:text-cyan-400 transition-colors">
             ALI_KHALID<span class="text-cyan-400 font-normal">::AI_LAB</span>
@@ -78,18 +78,18 @@
         </nav>
 
         <!-- Right HUD Utilities -->
-        <div class="flex items-center gap-2 sm:gap-3">
+        <div class="flex items-center gap-1.5 sm:gap-3">
           
           <!-- Real-Time Audio Spectrum Canvas -->
           <canvas id="audio-spectrum-canvas" width="65" height="18" class="hidden sm:inline bg-gray-950/60 border border-gray-800 rounded px-1" title="Real-time Audio Spectrum"></canvas>
 
           <!-- Sound Toggle Button -->
-          <button id="sound-toggle-btn" class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-gray-900/80 border border-gray-700/60 hover:border-cyan-400 text-gray-300 transition-all text-xs" title="Toggle Sci-Fi Sound Effects">
+          <button id="sound-toggle-btn" class="flex items-center gap-1.5 px-2 py-1.5 rounded-lg bg-gray-900/80 border border-gray-700/60 hover:border-cyan-400 text-gray-300 transition-all text-xs" title="Toggle Sci-Fi Sound Effects">
             <i data-lucide="volume-x" class="w-4 h-4 text-gray-400"></i>
             <span class="hidden sm:inline font-mono">SFX</span>
           </button>
 
-          <!-- Theme Palette Selector -->
+          <!-- Theme Palette Selector (Desktop) -->
           <div class="relative hidden sm:flex items-center bg-gray-900/80 border border-gray-700/60 rounded-lg p-0.5" title="Switch Cyber Theme Palette">
             <select id="theme-select" class="bg-transparent text-xs font-mono text-cyan-300 px-2 py-1 rounded focus:outline-none cursor-pointer">
               <option value="cyan" class="bg-gray-900 text-white">⚡ Cyan</option>
@@ -101,7 +101,7 @@
 
           <!-- Trilingual Switcher -->
           <div class="relative flex items-center bg-gray-900/80 border border-gray-700/60 rounded-lg p-0.5">
-            <select id="lang-select" class="bg-transparent text-xs font-mono text-cyan-300 px-2 py-1 rounded focus:outline-none cursor-pointer">
+            <select id="lang-select" class="bg-transparent text-xs font-mono text-cyan-300 px-1.5 sm:px-2 py-1 rounded focus:outline-none cursor-pointer">
               <option value="en" class="bg-gray-900 text-white">EN</option>
               <option value="ar" class="bg-gray-900 text-white">العربية (AR)</option>
               <option value="ja" class="bg-gray-900 text-white">日本語 (JA)</option>
@@ -109,17 +109,77 @@
           </div>
 
           <!-- Command Palette Launcher -->
-          <button onclick="document.dispatchEvent(new KeyboardEvent('keydown', {'key':'k','metaKey':true}))" class="hidden md:flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-cyan-950/40 border border-cyan-500/30 text-cyan-300 text-xs font-mono hover:bg-cyan-900/40 transition-colors">
-            <span>⌘K</span>
+          <button id="cmd-palette-btn" class="flex items-center gap-1 px-2 py-1.5 rounded-lg bg-cyan-950/40 border border-cyan-500/30 text-cyan-300 text-xs font-mono hover:bg-cyan-900/40 transition-colors" title="Command Palette (⌘K)">
+            <i data-lucide="terminal" class="w-4 h-4 md:hidden"></i>
+            <span class="hidden md:inline">⌘K</span>
           </button>
 
-          <!-- Resume PDF Button -->
-          <button class="open-resume-btn btn-neon py-1 px-3 text-xs">
+          <!-- Resume PDF Button (Desktop & Tablet) -->
+          <button class="open-resume-btn btn-neon py-1 px-2.5 sm:px-3 text-xs hidden sm:inline-flex">
             <span data-i18n="nav_cv">CV PDF</span>
+          </button>
+
+          <!-- Mobile Hamburger Menu Button (< lg) -->
+          <button id="mobile-menu-btn" class="lg:hidden p-1.5 rounded-lg bg-gray-900/80 border border-cyan-500/40 text-cyan-300 hover:bg-cyan-950/50 transition-colors flex items-center justify-center" aria-label="Toggle Navigation Menu">
+            <i data-lucide="menu" class="w-5 h-5"></i>
           </button>
         </div>
       </div>
     </header>
+
+    <!-- Mobile Navigation Drawer & Backdrop -->
+    <div id="mobile-menu-backdrop"></div>
+    <aside id="mobile-menu-drawer" aria-label="Mobile Navigation">
+      <div>
+        <!-- Drawer Header -->
+        <div class="flex items-center justify-between pb-4 border-b border-gray-800">
+          <div class="flex items-center gap-2 font-mono text-xs font-bold text-cyan-400">
+            <span class="pulse-indicator"></span>
+            <span>ALI_KHALID::NAV_MATRIX</span>
+          </div>
+          <button id="mobile-menu-close" class="p-1 rounded text-gray-400 hover:text-white font-mono text-xs" aria-label="Close Navigation">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <!-- Navigation Links -->
+        <nav class="mt-4 space-y-1">
+          <a href="#overview" class="mobile-nav-link"><i data-lucide="home" class="w-4 h-4 text-cyan-400"></i><span data-i18n="nav_home">Overview</span></a>
+          <a href="#models-section" class="mobile-nav-link"><i data-lucide="layers" class="w-4 h-4 text-cyan-400"></i><span data-i18n="nav_models">HF Models</span></a>
+          <a href="#demos-section" class="mobile-nav-link"><i data-lucide="zap" class="w-4 h-4 text-emerald-400"></i><span data-i18n="nav_demos">AI Playground</span></a>
+          <a href="#games-section" class="mobile-nav-link"><i data-lucide="gamepad-2" class="w-4 h-4 text-purple-400"></i><span data-i18n="nav_games">Neural Arcade</span></a>
+          <a href="#terminal-section" class="mobile-nav-link"><i data-lucide="terminal" class="w-4 h-4 text-emerald-400"></i><span>CLI Terminal</span></a>
+          <a href="#projects-section" class="mobile-nav-link"><i data-lucide="code" class="w-4 h-4 text-amber-400"></i><span data-i18n="nav_projects">Projects</span></a>
+          <a href="#experience-section" class="mobile-nav-link"><i data-lucide="briefcase" class="w-4 h-4 text-cyan-400"></i><span data-i18n="nav_experience">Timeline</span></a>
+          <a href="#skills-section" class="mobile-nav-link"><i data-lucide="cpu" class="w-4 h-4 text-purple-400"></i><span data-i18n="nav_skills">Skills & Certs</span></a>
+          <a href="#contact-section" class="mobile-nav-link"><i data-lucide="mail" class="w-4 h-4 text-pink-400"></i><span data-i18n="nav_contact">Contact</span></a>
+        </nav>
+      </div>
+
+      <!-- Drawer Footer Controls -->
+      <div class="pt-4 border-t border-gray-800/80 space-y-3">
+        <!-- Theme Selector for Mobile -->
+        <div class="flex items-center justify-between text-xs font-mono">
+          <span class="text-gray-400">THEME:</span>
+          <select id="mobile-theme-select" class="bg-gray-900 border border-gray-700 rounded px-2 py-1 text-cyan-300">
+            <option value="cyan">⚡ Cyan</option>
+            <option value="violet">🟣 Violet</option>
+            <option value="emerald">🟢 Emerald</option>
+            <option value="amber">🟠 Amber</option>
+          </select>
+        </div>
+
+        <!-- Download CV Button in Mobile Drawer -->
+        <button class="open-resume-btn btn-neon w-full py-2 text-xs">
+          <i data-lucide="file-text" class="w-4 h-4"></i>
+          <span data-i18n="nav_cv">DOWNLOAD CV (PDF)</span>
+        </button>
+
+        <div class="text-[10px] font-mono text-gray-500 text-center">
+          ALI KHALID • AI ENGINEER v3.0
+        </div>
+      </div>
+    </aside>
 
     <!-- ======================================================================
          HERO SECTION
@@ -813,13 +873,24 @@
           </div>
 
           <!-- Terminal Output Screen -->
-          <div id="terminal-output" class="p-5 h-80 overflow-y-auto space-y-1 bg-black/60 font-mono text-xs select-text"></div>
+          <div id="terminal-output" class="p-3 sm:p-5 h-80 overflow-y-auto overflow-x-auto space-y-1 bg-black/60 font-mono text-[11px] sm:text-xs select-text"></div>
 
           <!-- Command Input Bar -->
           <div class="p-3 bg-gray-900/90 border-t border-gray-800 flex items-center gap-2 font-mono text-xs">
-            <span class="text-emerald-400 font-bold">ali-khalid@ai-core:~$</span>
-            <input id="terminal-cli-input" type="text" placeholder="Type command ('help', 'models', 'predict', 'matrix')..." class="flex-1 bg-transparent text-white focus:outline-none font-mono">
-            <span class="text-[10px] text-gray-500">[ENTER TO TRANSMIT]</span>
+            <span class="text-emerald-400 font-bold whitespace-nowrap">ali-khalid@ai-core:~$</span>
+            <input id="terminal-cli-input" type="text" placeholder="Type command ('help', 'models', 'predict', 'matrix')..." class="flex-1 bg-transparent text-white focus:outline-none font-mono min-w-0">
+            <span class="text-[10px] text-gray-500 hidden sm:inline">[ENTER TO TRANSMIT]</span>
+          </div>
+
+          <!-- Mobile Quick Commands Toolbar -->
+          <div class="px-3 py-2 bg-gray-950/90 border-t border-gray-800/80 flex flex-wrap items-center gap-1.5 font-mono text-[11px]">
+            <span class="text-gray-500 text-[10px]">QUICK CMD:</span>
+            <button class="terminal-quick-cmd px-2 py-0.5 rounded bg-gray-900 border border-gray-700/60 hover:border-cyan-400 text-cyan-300 transition-colors cursor-pointer" data-cmd="help">help</button>
+            <button class="terminal-quick-cmd px-2 py-0.5 rounded bg-gray-900 border border-gray-700/60 hover:border-cyan-400 text-cyan-300 transition-colors cursor-pointer" data-cmd="models">models</button>
+            <button class="terminal-quick-cmd px-2 py-0.5 rounded bg-gray-900 border border-gray-700/60 hover:border-cyan-400 text-cyan-300 transition-colors cursor-pointer" data-cmd="thesis">thesis</button>
+            <button class="terminal-quick-cmd px-2 py-0.5 rounded bg-gray-900 border border-gray-700/60 hover:border-cyan-400 text-cyan-300 transition-colors cursor-pointer" data-cmd="predict Arabic OCR">predict</button>
+            <button class="terminal-quick-cmd px-2 py-0.5 rounded bg-gray-900 border border-gray-700/60 hover:border-cyan-400 text-cyan-300 transition-colors cursor-pointer" data-cmd="matrix">matrix</button>
+            <button class="terminal-quick-cmd px-2 py-0.5 rounded bg-gray-900 border border-gray-700/60 hover:border-cyan-400 text-red-400 transition-colors cursor-pointer" data-cmd="clear">clear</button>
           </div>
         </div>
 

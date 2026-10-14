@@ -70,6 +70,7 @@ class AIDemosManager {
     };
 
     const startDraw = (e) => {
+      if (e.touches) e.preventDefault();
       drawing = true;
       const pos = getPos(e);
       ctx.beginPath();
@@ -79,7 +80,7 @@ class AIDemosManager {
 
     const draw = (e) => {
       if (!drawing) return;
-      e.preventDefault();
+      if (e.touches) e.preventDefault();
       const pos = getPos(e);
       ctx.strokeStyle = '#00f2fe';
       ctx.lineWidth = 7;
@@ -98,6 +99,17 @@ class AIDemosManager {
       }
     };
 
+    // Responsive Canvas Resize
+    const handleResize = () => {
+      const box = canvas.getBoundingClientRect();
+      if (box.width > 0 && Math.abs(box.width - canvas.width) > 5) {
+        canvas.width = box.width;
+        resetCanvas();
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    document.addEventListener('demo-tab-activated', handleResize);
+
     canvas.addEventListener('mousedown', startDraw);
     canvas.addEventListener('mousemove', draw);
     window.addEventListener('mouseup', stopDraw);
@@ -105,6 +117,7 @@ class AIDemosManager {
     canvas.addEventListener('touchstart', startDraw, { passive: false });
     canvas.addEventListener('touchmove', draw, { passive: false });
     window.addEventListener('touchend', stopDraw);
+    window.addEventListener('touchcancel', stopDraw);
 
     if (clearBtn) {
       clearBtn.addEventListener('click', () => {
@@ -445,8 +458,8 @@ class AIDemosManager {
     const L3 = 45;
 
     // Base position
-    const baseX = canvas.width / 2;
-    const baseY = canvas.height - 40;
+    let baseX = canvas.width / 2;
+    let baseY = canvas.height - 40;
 
     // Target coordinates
     let targetX = baseX + 80;
@@ -628,6 +641,22 @@ class AIDemosManager {
       draw();
     };
 
+    // Dynamic Resize Handler
+    const handleResize = () => {
+      const box = canvas.getBoundingClientRect();
+      if (box.width > 0 && Math.abs(box.width - canvas.width) > 5) {
+        canvas.width = box.width;
+        baseX = canvas.width / 2;
+        baseY = canvas.height - 40;
+        targetX = baseX + 70;
+        targetY = baseY - 110;
+        solveIK(targetX, targetY);
+        draw();
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    document.addEventListener('demo-tab-activated', handleResize);
+
     canvas.addEventListener('mousedown', (e) => {
       dragging = true;
       updateTarget(e.clientX, e.clientY);
@@ -643,15 +672,23 @@ class AIDemosManager {
     });
 
     canvas.addEventListener('touchstart', (e) => {
+      e.preventDefault();
       dragging = true;
       if (e.touches[0]) updateTarget(e.touches[0].clientX, e.touches[0].clientY);
-    }, { passive: true });
+      if (window.soundFX) window.soundFX.playClick();
+    }, { passive: false });
 
     window.addEventListener('touchmove', (e) => {
-      if (dragging && e.touches[0]) updateTarget(e.touches[0].clientX, e.touches[0].clientY);
-    }, { passive: true });
+      if (dragging && e.touches[0]) {
+        e.preventDefault();
+        updateTarget(e.touches[0].clientX, e.touches[0].clientY);
+      }
+    }, { passive: false });
 
     window.addEventListener('touchend', () => {
+      dragging = false;
+    });
+    window.addEventListener('touchcancel', () => {
       dragging = false;
     });
 
